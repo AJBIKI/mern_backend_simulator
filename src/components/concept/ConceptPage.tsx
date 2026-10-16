@@ -10,13 +10,19 @@ import { BlockPitfalls } from './BlockPitfalls'
 import { BlockNext } from './BlockNext'
 import { useProgress } from '@/hooks/useProgress'
 
+import { useEffect } from 'react'
+
 interface ConceptPageProps {
   concept: Concept
 }
 
 export function ConceptPage({ concept }: ConceptPageProps) {
-  const { isComplete, markComplete, markIncomplete } = useProgress()
+  const { isComplete, markComplete, markIncomplete, markStarted } = useProgress()
   const done = isComplete(concept.id)
+
+  useEffect(() => {
+    markStarted(concept.id)
+  }, [concept.id, markStarted])
 
   return (
     <motion.div

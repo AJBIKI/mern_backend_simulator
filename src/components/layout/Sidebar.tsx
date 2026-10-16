@@ -1,9 +1,10 @@
+import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { level1Concepts } from '@/content/level1'
 import { level2Concepts } from '@/content/level2'
 import { level3Concepts } from '@/content/level3'
-import { useProgress } from '@/hooks/useProgress'
+import { useProgress, type ProgressFilter, type ConceptStatus } from '@/hooks/useProgress'
 import type { Concept } from '@/content/types'
 
 const levels = [
@@ -17,34 +18,75 @@ interface SidebarProps {
   onToggle: () => void
 }
 
-function ConceptLink({ concept, isActive, isComplete }: { concept: Concept; isActive: boolean; isComplete: boolean }) {
+function ConceptLink({
+  concept,
+  isActive,
+  status,
+}: {
+  concept: Concept
+  isActive: boolean
+  status: ConceptStatus
+}) {
   const navigate = useNavigate()
+  const isDone = status === 'done'
+  const isInProgress = status === 'in_progress'
+
   return (
     <button
       onClick={() => navigate(`/concept/${concept.id}`)}
-      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-150 flex items-center gap-2.5 group ${
+      className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition-all duration-150 flex items-center gap-2 group ${
         isActive
-          ? 'bg-slate-800 text-slate-100'
+          ? 'bg-slate-800 text-slate-100 font-medium'
+          : isDone
+          ? 'text-slate-400 opacity-60 hover:opacity-100 hover:bg-slate-800/40 hover:text-slate-200'
           : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
       }`}
     >
-      {/* Completion dot */}
-      <span
-        className={`flex-shrink-0 w-1.5 h-1.5 rounded-full transition-colors ${
-          isComplete ? 'bg-emerald-400' : 'bg-slate-700 group-hover:bg-slate-600'
-        }`}
-      />
-      <span className="truncate">{concept.title}</span>
+      {/* Status indicator: checkmark for completed, amber half for in progress, slate dot for not started */}
+      {isDone ? (
+        <span className="flex-shrink-0 w-3.5 h-3.5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-[10px] font-bold">
+          ✓
+        </span>
+      ) : isInProgress ? (
+        <span className="flex-shrink-0 w-3.5 h-3.5 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-[9px] font-bold">
+          ◐
+        </span>
+      ) : (
+        <span className="flex-shrink-0 w-1.5 h-1.5 mx-1 rounded-full bg-slate-700 group-hover:bg-slate-500 transition-colors" />
+      )}
+      <span className="truncate flex-1">{concept.title}</span>
     </button>
   )
 }
 
 export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const location = useLocation()
-  const { isComplete } = useProgress()
+  const { getStatus, levelStats } = useProgress()
+  const [filter, setFilter] = useState<ProgressFilter>('all')
+  const [searchQuery, setSearchQuery] = useState('')
+
   const currentId = location.pathname.startsWith('/concept/')
     ? location.pathname.replace('/concept/', '')
     : null
+
+  // Filter and search logic
+  const filteredLevels = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase()
+    return levels.map(lvl => {
+      const filteredConcepts = lvl.concepts.filter(c => {
+        const status = getStatus(c.id)
+        if (filter !== 'all' && status !== filter) return false
+        if (q && !c.title.toLowerCase().includes(q)) return false
+        return true
+      })
+      const stats = levelStats(lvl.level)
+      return {
+        ...lvl,
+        filteredConcepts,
+        stats,
+      }
+    })
+  }, [filter, searchQuery, getStatus, levelStats])
 
   return (
     <AnimatePresence initial={false}>
@@ -53,33 +95,124 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         className="relative flex-shrink-0 overflow-hidden border-r border-slate-800 bg-slate-900 h-full"
       >
-        <div className="w-64 h-full overflow-y-auto flex flex-col">
+        <div className="w-64 h-full overflow-hidden flex flex-col">
           {/* Logo area */}
-          <div className="flex items-center gap-2 px-4 py-4 border-b border-slate-800">
-            <div className="w-6 h-6 rounded bg-gradient-to-br from-emerald-400 to-amber-400 flex-shrink-0" />
-            <span className="font-mono font-semibold text-sm text-slate-100">Backend Revision</span>
+          <div className="flex items-center gap-2 px-4 py-3.5 border-b border-slate-800 flex-shrink-0">
+            <div className="w-5 h-5 rounded bg-gradient-to-br from-emerald-400 via-amber-400 to-rose-400 flex-shrink-0" />
+            <span className="font-mono font-semibold text-sm text-slate-100 truncate">
+              Backend Revision
+            </span>
+          </div>
+
+          {/* Controls: search input + filter tabs */}
+          <div className="p-2.5 border-b border-slate-800/80 space-y-2 flex-shrink-0 bg-slate-900/60">
+            {/* Sidebar search input */}
+            <div className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Filter list..."
+                className="w-full bg-slate-950 border border-slate-800 focus:border-slate-600 rounded-md px-2.5 py-1.5 text-xs text-slate-200 placeholder-slate-500 font-mono focus:outline-none transition-colors"
+              />
+              {searchQuery ? (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 text-xs font-mono"
+                  aria-label="Clear filter"
+                >
+                  ✕
+                </button>
+              ) : (
+                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-600 text-[10px] font-mono pointer-events-none">
+                  /
+                </span>
+              )}
+            </div>
+
+            {/* Filter tabs: All | Not started | In progress | Done */}
+            <div className="grid grid-cols-4 gap-1 p-0.5 bg-slate-950 rounded-lg border border-slate-800 text-[10px] font-mono">
+              <button
+                onClick={() => setFilter('all')}
+                className={`py-1 rounded text-center truncate transition-colors ${
+                  filter === 'all'
+                    ? 'bg-slate-800 text-slate-100 font-semibold'
+                    : 'text-slate-500 hover:text-slate-300'
+                }`}
+                title="All concepts"
+              >
+                All
+              </button>
+              <button
+                onClick={() => setFilter('not_started')}
+                className={`py-1 rounded text-center truncate transition-colors ${
+                  filter === 'not_started'
+                    ? 'bg-slate-800 text-slate-100 font-semibold'
+                    : 'text-slate-500 hover:text-slate-300'
+                }`}
+                title="Not started"
+              >
+                New
+              </button>
+              <button
+                onClick={() => setFilter('in_progress')}
+                className={`py-1 rounded text-center truncate transition-colors ${
+                  filter === 'in_progress'
+                    ? 'bg-slate-800 text-slate-100 font-semibold'
+                    : 'text-slate-500 hover:text-slate-300'
+                }`}
+                title="In progress"
+              >
+                Active
+              </button>
+              <button
+                onClick={() => setFilter('done')}
+                className={`py-1 rounded text-center truncate transition-colors ${
+                  filter === 'done'
+                    ? 'bg-slate-800 text-slate-100 font-semibold'
+                    : 'text-slate-500 hover:text-slate-300'
+                }`}
+                title="Done"
+              >
+                Done
+              </button>
+            </div>
           </div>
 
           {/* Concept tree */}
-          <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-6">
-            {levels.map(({ level, label, color, dot, concepts }) => (
+          <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-5">
+            {filteredLevels.map(({ level, label, color, dot, filteredConcepts, stats }) => (
               <div key={level}>
-                <div className="flex items-center gap-2 px-2 mb-2">
-                  <span className={`w-2 h-2 rounded-full flex-shrink-0 ${dot}`} />
-                  <span className={`text-xs font-mono font-semibold uppercase tracking-wider ${color}`}>
-                    L{level} — {label}
+                {/* Level header with X/Y done */}
+                <div className="flex items-center justify-between px-2 mb-1.5">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${dot}`} />
+                    <span className={`text-[11px] font-mono font-semibold uppercase tracking-wider truncate ${color}`}>
+                      L{level} — {label}
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono text-slate-500 flex-shrink-0">
+                    {stats.done}/{stats.total} done
                   </span>
                 </div>
-                <div className="space-y-0.5">
-                  {concepts.map(c => (
-                    <ConceptLink
-                      key={c.id}
-                      concept={c}
-                      isActive={c.id === currentId}
-                      isComplete={isComplete(c.id)}
-                    />
-                  ))}
-                </div>
+
+                {/* Concept list */}
+                {filteredConcepts.length > 0 ? (
+                  <div className="space-y-0.5">
+                    {filteredConcepts.map(c => (
+                      <ConceptLink
+                        key={c.id}
+                        concept={c}
+                        isActive={c.id === currentId}
+                        status={getStatus(c.id)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="px-2 py-1 text-[11px] font-mono text-slate-600 italic">
+                    No matching concepts
+                  </div>
+                )}
               </div>
             ))}
           </nav>

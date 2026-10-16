@@ -5,9 +5,10 @@ import { conceptMap } from '@/content'
 
 interface TopBarProps {
   onToggleSidebar: () => void
+  onOpenSearch: () => void
 }
 
-export function TopBar({ onToggleSidebar }: TopBarProps) {
+export function TopBar({ onToggleSidebar, onOpenSearch }: TopBarProps) {
   const navigate = useNavigate()
   const location = useLocation()
   const { totalProgress, levelProgress } = useProgress()
@@ -18,7 +19,7 @@ export function TopBar({ onToggleSidebar }: TopBarProps) {
   const concept = conceptId ? conceptMap[conceptId] : null
 
   return (
-    <header className="flex-shrink-0 h-12 flex items-center gap-3 px-4 border-b border-slate-800 bg-slate-900/80 backdrop-blur-sm">
+    <header className="flex-shrink-0 h-12 flex items-center gap-3 px-4 border-b border-slate-800 bg-slate-900/80 backdrop-blur-sm z-20">
       {/* Sidebar toggle */}
       <button
         onClick={onToggleSidebar}
@@ -47,6 +48,31 @@ export function TopBar({ onToggleSidebar }: TopBarProps) {
           </>
         )}
       </nav>
+
+      {/* Search trigger button */}
+      <button
+        onClick={onOpenSearch}
+        className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-950/70 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200 transition-all text-xs font-mono group"
+        aria-label="Open search palette (Cmd+K / Ctrl+K)"
+      >
+        <svg
+          className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300 transition-colors"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+        <span className="hidden sm:inline text-slate-400 group-hover:text-slate-200">Search</span>
+        <kbd className="hidden md:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-[10px] text-slate-400 group-hover:border-slate-700">
+          <span className="text-xs">⌘</span>K
+        </kbd>
+      </button>
 
       {/* Level progress rings */}
       <div className="flex items-center gap-3 flex-shrink-0">

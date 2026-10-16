@@ -46,6 +46,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "4xx Client Error",
     "definition": "Status code range indicating a problem caused by the client, such as malformed syntax, unauthorized access, or missing resource.",
     "concepts": [
+      "http-request-anatomy",
       "http-response-status-codes"
     ]
   },
@@ -54,6 +55,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "5xx Server Error",
     "definition": "Status code range indicating the server failed to fulfill an apparently valid request due to an unhandled internal exception or outage.",
     "concepts": [
+      "http-request-anatomy",
       "http-response-status-codes"
     ]
   },
@@ -87,6 +89,7 @@ export const glossary: GlossaryTerm[] = [
     "definition": "Atomicity, Consistency, Isolation, and Durability — properties ensuring database transactions process reliably without corruption.",
     "concepts": [
       "cap-theorem-acid-vs-base",
+      "microservices-vs-monolith",
       "transactions-and-sessions"
     ]
   },
@@ -121,6 +124,8 @@ export const glossary: GlossaryTerm[] = [
     "definition": "A custom operational error class extending standard Error, adding HTTP status codes and an isOperational boolean flag.",
     "concepts": [
       "centralized-error-handling",
+      "file-uploads",
+      "layered-architecture",
       "operational-vs-programmer-errors"
     ]
   },
@@ -137,7 +142,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "async/await",
     "definition": "Syntactic sugar over Promises enabling developers to write non-blocking asynchronous code in a clean, synchronous-looking style.",
     "concepts": [
-      "callbacks-promises-async"
+      "callbacks-promises-async",
+      "event-loop-intro"
     ]
   },
   {
@@ -153,7 +159,12 @@ export const glossary: GlossaryTerm[] = [
     "term": "Authentication (AuthN)",
     "definition": "The verification process of confirming the identity of a client or user through credentials, tokens, or biometric proof.",
     "concepts": [
-      "auth-middleware-rbac"
+      "auth-middleware-rbac",
+      "oauth2-sso-flows",
+      "owasp-api-top-10",
+      "rate-limiting",
+      "rest-principles",
+      "security-headers-injection"
     ]
   },
   {
@@ -161,7 +172,12 @@ export const glossary: GlossaryTerm[] = [
     "term": "Authorization (AuthZ)",
     "definition": "The security process of checking whether an authenticated user has the necessary permissions or roles to execute an action.",
     "concepts": [
-      "auth-middleware-rbac"
+      "auth-middleware-rbac",
+      "cors-preflight",
+      "http-request-anatomy",
+      "middleware-pipeline",
+      "oauth2-sso-flows",
+      "owasp-api-top-10"
     ]
   },
   {
@@ -194,7 +210,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Backpressure",
     "definition": "A flow-control mechanism signaling the fast data producer to pause reading when the slow consumer's internal buffer exceeds capacity.",
     "concepts": [
-      "backpressure"
+      "backpressure",
+      "streams-and-buffers"
     ]
   },
   {
@@ -218,7 +235,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "bcrypt",
     "definition": "An adaptive, key-stretching password-hashing function based on the Blowfish cipher, designed to resist brute-force hardware attacks.",
     "concepts": [
-      "hashing-and-salting"
+      "hashing-and-salting",
+      "mongoose-schema-deep-dive"
     ]
   },
   {
@@ -236,7 +254,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Blocking the Event Loop",
     "definition": "Executing synchronous, long-running operations on Node's single JavaScript thread, stalling all concurrent HTTP requests and I/O handlers.",
     "concepts": [
-      "blocking-the-loop"
+      "blocking-the-loop",
+      "event-loop-intro"
     ]
   },
   {
@@ -244,7 +263,22 @@ export const glossary: GlossaryTerm[] = [
     "term": "Body",
     "definition": "The payload data carried inside an HTTP request or response, commonly formatted as JSON, form data, or binary.",
     "concepts": [
-      "http-request-anatomy"
+      "api-gateway-retries-circuit-breaker",
+      "body-parsing-json",
+      "controller-vs-service-vs-model",
+      "express-bootstrapping",
+      "http-request-anatomy",
+      "http-response-status-codes",
+      "idempotency-keys",
+      "idempotency-safe-methods",
+      "input-validation-zod",
+      "layered-architecture",
+      "message-queues-jobs",
+      "middleware-pipeline",
+      "observability-tracing",
+      "owasp-api-top-10",
+      "security-headers-injection",
+      "testing-unit-vs-integration"
     ]
   },
   {
@@ -292,6 +326,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Brute-Force Attack",
     "definition": "An automated trial-and-error attack attempting thousands of credential combinations until the correct password or key is found.",
     "concepts": [
+      "hashing-and-salting",
       "rate-limiting"
     ]
   },
@@ -316,6 +351,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Buffer",
     "definition": "Fixed-size raw binary memory allocations outside V8's garbage-collected heap, used for handling binary network packets and disk blocks.",
     "concepts": [
+      "backpressure",
+      "file-uploads",
       "streams-and-buffers"
     ]
   },
@@ -332,7 +369,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Business Logic",
     "definition": "The core domain rules, computations, and workflows governing how application data is created, transformed, and exchanged.",
     "concepts": [
-      "controller-vs-service-vs-model"
+      "controller-vs-service-vs-model",
+      "layered-architecture"
     ]
   },
   {
@@ -340,7 +378,12 @@ export const glossary: GlossaryTerm[] = [
     "term": "Cache",
     "definition": "A fast-access storage layer (usually in-memory, e.g. Redis) that stores results of expensive operations for quick re-use.",
     "concepts": [
-      "cache-aside-pattern"
+      "cache-aside-pattern",
+      "cache-invalidation-strategies",
+      "http-caching-etag",
+      "idempotency-keys",
+      "redis-caching",
+      "websockets-vs-sse-vs-polling"
     ]
   },
   {
@@ -375,7 +418,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "Cache Invalidation",
     "definition": "The process of removing or updating stale cache entries when the authoritative database record is updated or deleted.",
     "concepts": [
-      "cache-invalidation-strategies"
+      "cache-aside-pattern",
+      "cache-invalidation-strategies",
+      "http-caching-etag"
     ]
   },
   {
@@ -410,7 +455,11 @@ export const glossary: GlossaryTerm[] = [
     "term": "Callback",
     "definition": "A function passed into another function as an argument to be invoked once an asynchronous background operation completes.",
     "concepts": [
-      "callbacks-promises-async"
+      "backpressure",
+      "callbacks-promises-async",
+      "event-loop-deep-dive",
+      "event-loop-phases-deep-dive",
+      "oauth2-sso-flows"
     ]
   },
   {
@@ -458,6 +507,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Check Phase",
     "definition": "The event loop phase dedicated exclusively to executing callbacks scheduled via setImmediate() right after poll I/O completes.",
     "concepts": [
+      "event-loop-deep-dive",
       "event-loop-phases-deep-dive"
     ]
   },
@@ -482,7 +532,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Circuit Breaker Pattern",
     "definition": "A resilience pattern that halts calls to a failing downstream service (opening the circuit) to prevent cascade failure and allow recovery.",
     "concepts": [
-      "api-gateway-retries-circuit-breaker"
+      "api-gateway-retries-circuit-breaker",
+      "async-error-wrapper"
     ]
   },
   {
@@ -490,6 +541,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "CommonJS (CJS)",
     "definition": "Legacy module system in Node.js using synchronous require() calls and module.exports objects to import and expose functionality.",
     "concepts": [
+      "clustering-and-pm2",
       "modules-cjs-vs-esm"
     ]
   },
@@ -506,7 +558,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "JWT Claims",
     "definition": "Statements and pieces of metadata encoded inside a JWT payload asserting user identity, expiration times, or granted scopes.",
     "concepts": [
-      "auth-middleware-rbac"
+      "auth-middleware-rbac",
+      "jwt-anatomy"
     ]
   },
   {
@@ -514,7 +567,20 @@ export const glossary: GlossaryTerm[] = [
     "term": "Client",
     "definition": "The consuming device or software (such as a web browser or mobile app) that initiates requests to a remote server.",
     "concepts": [
-      "client-server-model"
+      "client-server-model",
+      "connection-pooling",
+      "environment-variables",
+      "error-handling-101",
+      "http-response-status-codes",
+      "idempotency-keys",
+      "middleware-pipeline",
+      "mongodb-basics",
+      "oauth2-sso-flows",
+      "pagination-filter-sort-projection",
+      "rate-limiting",
+      "sessions-vs-jwt",
+      "websockets-vs-sse-vs-polling",
+      "what-is-nodejs"
     ]
   },
   {
@@ -546,7 +612,16 @@ export const glossary: GlossaryTerm[] = [
     "term": "Collection",
     "definition": "A grouping of MongoDB documents inside a database, analogous to a table in a relational database but with dynamic schema support.",
     "concepts": [
-      "mongodb-basics"
+      "aggregation-pipeline",
+      "cache-invalidation-strategies",
+      "embedding-vs-referencing",
+      "indexing-collscan-ixscan",
+      "mongodb-basics",
+      "mongoose-schema-model",
+      "populate-vs-lookup",
+      "rest-principles",
+      "sharding",
+      "transactions-and-sessions"
     ]
   },
   {
@@ -563,6 +638,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Transaction Commit",
     "definition": "The final step in a database transaction that saves all staged writes permanently into the database oplog and storage.",
     "concepts": [
+      "environment-variables",
+      "npm-package-json",
       "transactions-and-sessions"
     ]
   },
@@ -580,7 +657,12 @@ export const glossary: GlossaryTerm[] = [
     "term": "Configuration",
     "definition": "Settings and parameters that define how an application executes across different deployment environments (dev, staging, prod).",
     "concepts": [
-      "environment-variables"
+      "clustering-and-pm2",
+      "cookies-security-flags",
+      "cors-preflight",
+      "environment-variables",
+      "horizontal-scaling-load-balancing",
+      "logging-and-config"
     ]
   },
   {
@@ -612,7 +694,13 @@ export const glossary: GlossaryTerm[] = [
     "term": "Content-Type",
     "definition": "HTTP header indicating the media type (MIME type) of the payload, informing the receiver how to parse the request body.",
     "concepts": [
-      "body-parsing-json"
+      "body-parsing-json",
+      "cors-preflight",
+      "http-request-anatomy",
+      "observability-tracing",
+      "streams-and-buffers",
+      "websockets-vs-sse-vs-polling",
+      "what-is-nodejs"
     ]
   },
   {
@@ -620,7 +708,10 @@ export const glossary: GlossaryTerm[] = [
     "term": "Controller",
     "definition": "The application component responsible for parsing incoming HTTP requests, validating inputs, and returning formatted HTTP responses.",
     "concepts": [
+      "async-error-wrapper",
+      "auth-middleware-rbac",
       "controller-vs-service-vs-model",
+      "input-validation-zod",
       "layered-architecture"
     ]
   },
@@ -629,7 +720,12 @@ export const glossary: GlossaryTerm[] = [
     "term": "HTTP Cookies",
     "definition": "Small packets of state data stored in client browsers and automatically sent along with subsequent requests to matching origins.",
     "concepts": [
-      "cookies-security-flags"
+      "access-refresh-tokens",
+      "client-server-model",
+      "cookies-security-flags",
+      "cors-preflight",
+      "jwt-anatomy",
+      "mongoose-schema-model"
     ]
   },
   {
@@ -685,7 +781,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Cross-Site Request Forgery (CSRF)",
     "definition": "An attack forcing an authenticated user's browser to send unauthorized forged requests to a vulnerable application via ambient cookies.",
     "concepts": [
-      "cookies-security-flags"
+      "cookies-security-flags",
+      "oauth2-sso-flows"
     ]
   },
   {
@@ -749,6 +846,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Dependency",
     "definition": "A third-party library or package listed under dependencies that is strictly required for the application to function in production.",
     "concepts": [
+      "api-gateway-retries-circuit-breaker",
+      "docker-ci-cd",
       "npm-package-json"
     ]
   },
@@ -773,6 +872,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Distributed Systems",
     "definition": "A collection of autonomous computing nodes communicating over a network that appears to end users as a single coherent system.",
     "concepts": [
+      "idempotency-keys",
+      "idempotency-safe-methods",
       "microservices-vs-monolith"
     ]
   },
@@ -797,7 +898,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Docker",
     "definition": "A containerization platform that packages application code and all its system dependencies into portable, isolated container images.",
     "concepts": [
-      "docker-ci-cd"
+      "docker-ci-cd",
+      "logging-and-config"
     ]
   },
   {
@@ -805,8 +907,14 @@ export const glossary: GlossaryTerm[] = [
     "term": "Document",
     "definition": "A single record in a MongoDB collection composed of field-and-value pairs, analogous to a JSON object or a relational database row.",
     "concepts": [
+      "cookies-security-flags",
+      "embedding-vs-referencing",
+      "http-caching-etag",
       "mongodb-basics",
-      "mongoose-schema-model"
+      "mongoose-schema-deep-dive",
+      "mongoose-schema-model",
+      "populate-vs-lookup",
+      "transactions-and-sessions"
     ]
   },
   {
@@ -830,6 +938,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Embedded Document",
     "definition": "Design pattern where related sub-documents or arrays are stored directly inside a parent document for fast single-query retrieval.",
     "concepts": [
+      "embedding-vs-referencing",
       "mongodb-basics"
     ]
   },
@@ -838,7 +947,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "Document Embedding",
     "definition": "Nesting related subdocuments or arrays directly inside a parent MongoDB document for single-query atomicity and performance.",
     "concepts": [
-      "embedding-vs-referencing"
+      "embedding-vs-referencing",
+      "mongodb-basics",
+      "pubsub-and-fanout"
     ]
   },
   {
@@ -846,6 +957,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Endpoint",
     "definition": "A specific URL location on a web server combined with an HTTP method where an API client can access or manipulate a resource.",
     "concepts": [
+      "oauth2-sso-flows",
       "rest-principles"
     ]
   },
@@ -910,6 +1022,8 @@ export const glossary: GlossaryTerm[] = [
       "event-loop-deep-dive",
       "event-loop-intro",
       "event-loop-phases-deep-dive",
+      "hashing-and-salting",
+      "logging-and-config",
       "what-is-nodejs"
     ]
   },
@@ -935,7 +1049,11 @@ export const glossary: GlossaryTerm[] = [
     "term": ".explain()",
     "definition": "MongoDB method that returns the query execution plan, showing whether MongoDB used COLLSCAN or IXSCAN.",
     "concepts": [
-      "indexing-collscan-ixscan"
+      "access-refresh-tokens",
+      "compound-index-esr-rule",
+      "indexing-collscan-ixscan",
+      "oauth2-sso-flows",
+      "zero-downtime-deploy-migrations"
     ]
   },
   {
@@ -943,6 +1061,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Exponential Backoff",
     "definition": "A retry algorithm that exponentially increases delay between failed attempts (e.g., 1s, 2s, 4s, 8s) to give troubled services time to recover.",
     "concepts": [
+      "api-gateway-retries-circuit-breaker",
       "message-queues-jobs"
     ]
   },
@@ -951,7 +1070,31 @@ export const glossary: GlossaryTerm[] = [
     "term": "export",
     "definition": "ESM keyword used to expose functions, objects, or primitive values from a module so other files can consume them.",
     "concepts": [
-      "modules-cjs-vs-esm"
+      "access-refresh-tokens",
+      "async-error-wrapper",
+      "auth-middleware-rbac",
+      "cache-invalidation-strategies",
+      "centralized-error-handling",
+      "controller-vs-service-vs-model",
+      "environment-variables",
+      "express-bootstrapping",
+      "hashing-and-salting",
+      "input-validation-zod",
+      "jwt-anatomy",
+      "layered-architecture",
+      "logging-and-config",
+      "message-queues-jobs",
+      "microservices-vs-monolith",
+      "modules-cjs-vs-esm",
+      "mongoose-schema-model",
+      "operational-vs-programmer-errors",
+      "pagination-filter-sort-projection",
+      "pubsub-and-fanout",
+      "rate-limiting",
+      "redis-caching",
+      "streams-and-buffers",
+      "transactions-and-sessions",
+      "worker-threads-child-process"
     ]
   },
   {
@@ -959,8 +1102,30 @@ export const glossary: GlossaryTerm[] = [
     "term": "Express",
     "definition": "Fast, minimalist web framework for Node.js providing a robust set of routing and middleware features for APIs.",
     "concepts": [
+      "async-error-wrapper",
+      "body-parsing-json",
+      "centralized-error-handling",
+      "client-server-model",
+      "controller-vs-service-vs-model",
+      "cookies-security-flags",
+      "cors-preflight",
+      "error-handling-101",
       "express-bootstrapping",
-      "routing"
+      "horizontal-scaling-load-balancing",
+      "http-request-anatomy",
+      "input-validation-zod",
+      "layered-architecture",
+      "middleware-pipeline",
+      "npm-package-json",
+      "oauth2-sso-flows",
+      "rate-limiting",
+      "routing",
+      "security-headers-injection",
+      "sessions-vs-jwt",
+      "testing-unit-vs-integration",
+      "websockets-vs-sse-vs-polling",
+      "what-is-nodejs",
+      "zero-downtime-deploy-migrations"
     ]
   },
   {
@@ -969,6 +1134,8 @@ export const glossary: GlossaryTerm[] = [
     "definition": "A software design philosophy advocating immediate termination or throwing at the earliest sign of failure to prevent corrupted states.",
     "concepts": [
       "api-gateway-retries-circuit-breaker",
+      "connection-pooling",
+      "environment-variables",
       "operational-vs-programmer-errors"
     ]
   },
@@ -993,6 +1160,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "File Upload Handling",
     "definition": "The process of receiving multipart file streams over HTTP, validating binary types, and persisting to disk or cloud object storage.",
     "concepts": [
+      "body-parsing-json",
       "file-uploads"
     ]
   },
@@ -1049,7 +1217,8 @@ export const glossary: GlossaryTerm[] = [
     "term": ".gitignore",
     "definition": "A configuration file telling Git which intentionally untracked files, directories, or secret files to ignore from version control.",
     "concepts": [
-      "environment-variables"
+      "environment-variables",
+      "npm-package-json"
     ]
   },
   {
@@ -1057,7 +1226,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "Global Middleware",
     "definition": "Middleware mounted with app.use() without path restrictions that executes on every single incoming HTTP request.",
     "concepts": [
-      "express-bootstrapping"
+      "centralized-error-handling",
+      "express-bootstrapping",
+      "middleware-pipeline"
     ]
   },
   {
@@ -1073,6 +1244,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "GraphQL",
     "definition": "An API query language and runtime enabling clients to request exactly the data fields they need in a single round-trip HTTP request.",
     "concepts": [
+      "client-server-model",
       "graphql-vs-rest-vs-grpc"
     ]
   },
@@ -1097,7 +1269,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "Handshake",
     "definition": "An automated negotiation sequence (such as TCP SYN-ACK or TLS negotiation) establishing connection parameters before data transfer.",
     "concepts": [
-      "dns-tcp-http-journey"
+      "dns-tcp-http-journey",
+      "http-caching-etag",
+      "oauth2-sso-flows"
     ]
   },
   {
@@ -1121,7 +1295,11 @@ export const glossary: GlossaryTerm[] = [
     "term": "Header",
     "definition": "Key-value metadata attached to HTTP requests and responses controlling auth, content negotiation, caching, and compression.",
     "concepts": [
-      "http-request-anatomy"
+      "body-parsing-json",
+      "http-caching-etag",
+      "http-request-anatomy",
+      "idempotency-keys",
+      "security-headers-injection"
     ]
   },
   {
@@ -1129,7 +1307,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Health Check Probe",
     "definition": "Periodic HTTP or TCP probes sent by load balancers to detect unhealthy service instances and temporarily remove them from traffic rotation.",
     "concepts": [
-      "horizontal-scaling-load-balancing"
+      "horizontal-scaling-load-balancing",
+      "zero-downtime-deploy-migrations"
     ]
   },
   {
@@ -1193,9 +1372,29 @@ export const glossary: GlossaryTerm[] = [
     "term": "HTTP",
     "definition": "HyperText Transfer Protocol — the standard protocol for sending requests and responses between client and server across the web.",
     "concepts": [
+      "api-gateway-retries-circuit-breaker",
+      "body-parsing-json",
       "client-server-model",
+      "clustering-and-pm2",
+      "connection-pooling",
+      "controller-vs-service-vs-model",
       "dns-tcp-http-journey",
-      "http-request-anatomy"
+      "express-bootstrapping",
+      "graphql-vs-rest-vs-grpc",
+      "horizontal-scaling-load-balancing",
+      "http-caching-etag",
+      "http-request-anatomy",
+      "http-response-status-codes",
+      "idempotency-safe-methods",
+      "layered-architecture",
+      "message-queues-jobs",
+      "microservices-vs-monolith",
+      "observability-tracing",
+      "rest-principles",
+      "security-headers-injection",
+      "what-is-nodejs",
+      "worker-threads-child-process",
+      "zero-downtime-deploy-migrations"
     ]
   },
   {
@@ -1243,6 +1442,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Idempotency",
     "definition": "Property of an operation where making identical requests multiple times produces the exact same server state as a single request.",
     "concepts": [
+      "idempotency-keys",
       "idempotency-safe-methods"
     ]
   },
@@ -1267,7 +1467,34 @@ export const glossary: GlossaryTerm[] = [
     "term": "import",
     "definition": "ESM keyword used to statically or dynamically bring in exported bindings, components, or functions from other modules.",
     "concepts": [
-      "modules-cjs-vs-esm"
+      "api-gateway-retries-circuit-breaker",
+      "body-parsing-json",
+      "client-server-model",
+      "connection-pooling",
+      "cors-preflight",
+      "environment-variables",
+      "express-bootstrapping",
+      "file-uploads",
+      "hashing-and-salting",
+      "input-validation-zod",
+      "jwt-anatomy",
+      "logging-and-config",
+      "message-queues-jobs",
+      "microservices-vs-monolith",
+      "middleware-pipeline",
+      "modules-cjs-vs-esm",
+      "mongodb-basics",
+      "mongoose-schema-model",
+      "observability-tracing",
+      "pubsub-and-fanout",
+      "rate-limiting",
+      "redis-caching",
+      "routing",
+      "security-headers-injection",
+      "streams-and-buffers",
+      "testing-unit-vs-integration",
+      "what-is-nodejs",
+      "worker-threads-child-process"
     ]
   },
   {
@@ -1283,7 +1510,12 @@ export const glossary: GlossaryTerm[] = [
     "term": "Index",
     "definition": "A sorted data structure (B-Tree) built alongside a collection to speed up queries without scanning every document.",
     "concepts": [
-      "indexing-collscan-ixscan"
+      "aggregation-pipeline",
+      "compound-index-esr-rule",
+      "indexing-collscan-ixscan",
+      "modules-cjs-vs-esm",
+      "mongoose-schema-model",
+      "npm-package-json"
     ]
   },
   {
@@ -1307,7 +1539,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "IP Address",
     "definition": "A unique numerical label (IPv4 or IPv6) assigned to every device connected to a computer network for routing and location.",
     "concepts": [
-      "dns-tcp-http-journey"
+      "dns-tcp-http-journey",
+      "rate-limiting"
     ]
   },
   {
@@ -1356,7 +1589,42 @@ export const glossary: GlossaryTerm[] = [
     "term": "JSON",
     "definition": "JavaScript Object Notation — lightweight, language-agnostic text format widely used for structuring and exchanging API data.",
     "concepts": [
-      "body-parsing-json"
+      "access-refresh-tokens",
+      "api-gateway-retries-circuit-breaker",
+      "async-error-wrapper",
+      "blocking-the-loop",
+      "body-parsing-json",
+      "cache-aside-pattern",
+      "callbacks-promises-async",
+      "centralized-error-handling",
+      "client-server-model",
+      "controller-vs-service-vs-model",
+      "docker-ci-cd",
+      "error-handling-101",
+      "event-loop-intro",
+      "express-bootstrapping",
+      "file-uploads",
+      "graphql-vs-rest-vs-grpc",
+      "http-caching-etag",
+      "http-request-anatomy",
+      "http-response-status-codes",
+      "idempotency-keys",
+      "idempotency-safe-methods",
+      "layered-architecture",
+      "logging-and-config",
+      "message-queues-jobs",
+      "middleware-pipeline",
+      "modules-cjs-vs-esm",
+      "mongodb-basics",
+      "npm-package-json",
+      "observability-tracing",
+      "owasp-api-top-10",
+      "pagination-filter-sort-projection",
+      "pubsub-and-fanout",
+      "redis-caching",
+      "rest-principles",
+      "websockets-vs-sse-vs-polling",
+      "what-is-nodejs"
     ]
   },
   {
@@ -1364,7 +1632,10 @@ export const glossary: GlossaryTerm[] = [
     "term": "JWT",
     "definition": "JSON Web Token — a compact, self-contained string for transmitting claims between parties, split into header.payload.signature.",
     "concepts": [
+      "access-refresh-tokens",
+      "auth-middleware-rbac",
       "jwt-anatomy",
+      "logging-and-config",
       "sessions-vs-jwt"
     ]
   },
@@ -1421,7 +1692,10 @@ export const glossary: GlossaryTerm[] = [
     "term": "Mongoose .lean()",
     "definition": "A Mongoose query option returning plain JavaScript objects instead of full Mongoose document instances, boosting read performance.",
     "concepts": [
-      "populate-vs-lookup"
+      "cap-theorem-acid-vs-base",
+      "populate-vs-lookup",
+      "redis-caching",
+      "replica-sets-read-write-concern"
     ]
   },
   {
@@ -1437,8 +1711,10 @@ export const glossary: GlossaryTerm[] = [
     "term": "libuv",
     "definition": "A multi-platform C library providing asynchronous I/O abstractions, non-blocking network polling, and a background worker thread pool.",
     "concepts": [
+      "blocking-the-loop",
       "event-loop-deep-dive",
       "event-loop-intro",
+      "event-loop-phases-deep-dive",
       "what-is-nodejs"
     ]
   },
@@ -1479,7 +1755,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "Application Logging",
     "definition": "Recording operational events, warnings, errors, and system metrics during application execution for auditing and monitoring.",
     "concepts": [
-      "logging-and-config"
+      "centralized-error-handling",
+      "logging-and-config",
+      "observability-tracing"
     ]
   },
   {
@@ -1487,6 +1765,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "$lookup Stage",
     "definition": "MongoDB aggregation operator performing a left outer join to an external collection in the same database to filter and combine data.",
     "concepts": [
+      "dns-tcp-http-journey",
       "populate-vs-lookup"
     ]
   },
@@ -1505,6 +1784,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Mass Assignment Vulnerability",
     "definition": "A flaw where user request payloads bind directly to internal model fields without filtering, allowing attackers to overwrite isAdmin or role.",
     "concepts": [
+      "input-validation-zod",
       "owasp-api-top-10"
     ]
   },
@@ -1513,7 +1793,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "$match Stage",
     "definition": "MongoDB aggregation pipeline stage that filters documents to pass only those matching specified query conditions.",
     "concepts": [
-      "aggregation-pipeline"
+      "aggregation-pipeline",
+      "http-caching-etag",
+      "idempotency-keys"
     ]
   },
   {
@@ -1529,7 +1811,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Message Broker",
     "definition": "An intermediary software agent (Redis, RabbitMQ, Kafka) that translates, routes, and guarantees delivery of messages between services.",
     "concepts": [
-      "pubsub-and-fanout"
+      "pubsub-and-fanout",
+      "websockets-vs-sse-vs-polling"
     ]
   },
   {
@@ -1545,7 +1828,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Message Queue",
     "definition": "An asynchronous buffer that decouples task producers from workers, enabling durable background processing and traffic leveling.",
     "concepts": [
-      "message-queues-jobs"
+      "message-queues-jobs",
+      "pubsub-and-fanout"
     ]
   },
   {
@@ -1555,7 +1839,12 @@ export const glossary: GlossaryTerm[] = [
     "concepts": [
       "http-request-anatomy",
       "idempotency-safe-methods",
-      "routing"
+      "middleware-pipeline",
+      "observability-tracing",
+      "populate-vs-lookup",
+      "rest-principles",
+      "routing",
+      "streams-and-buffers"
     ]
   },
   {
@@ -1563,7 +1852,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "Microservices Architecture",
     "definition": "An architectural style structuring an application as a collection of independently deployable, loosely coupled, domain-scoped services.",
     "concepts": [
-      "microservices-vs-monolith"
+      "graphql-vs-rest-vs-grpc",
+      "microservices-vs-monolith",
+      "observability-tracing"
     ]
   },
   {
@@ -1582,8 +1873,14 @@ export const glossary: GlossaryTerm[] = [
     "term": "Middleware",
     "definition": "Functions with access to req, res, and next that execute in a sequential pipeline to process, validate, or transform requests.",
     "concepts": [
+      "auth-middleware-rbac",
       "body-parsing-json",
-      "middleware-pipeline"
+      "centralized-error-handling",
+      "error-handling-101",
+      "express-bootstrapping",
+      "http-request-anatomy",
+      "middleware-pipeline",
+      "observability-tracing"
     ]
   },
   {
@@ -1607,8 +1904,12 @@ export const glossary: GlossaryTerm[] = [
     "term": "Model",
     "definition": "A compiled Mongoose constructor class based on a Schema providing an interface to query, create, update, and delete collection documents.",
     "concepts": [
+      "cap-theorem-acid-vs-base",
+      "client-server-model",
       "controller-vs-service-vs-model",
       "layered-architecture",
+      "mongodb-basics",
+      "mongoose-schema-deep-dive",
       "mongoose-schema-model"
     ]
   },
@@ -1617,6 +1918,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "module.exports",
     "definition": "The special object in CommonJS files that determines what values or functions are exposed to other files calling require().",
     "concepts": [
+      "clustering-and-pm2",
       "modules-cjs-vs-esm"
     ]
   },
@@ -1625,7 +1927,22 @@ export const glossary: GlossaryTerm[] = [
     "term": "MongoDB",
     "definition": "A scalable, distributed NoSQL document database storing records as flexible, JSON-like BSON data structures.",
     "concepts": [
-      "mongodb-basics"
+      "aggregation-pipeline",
+      "cap-theorem-acid-vs-base",
+      "compound-index-esr-rule",
+      "embedding-vs-referencing",
+      "environment-variables",
+      "indexing-collscan-ixscan",
+      "mongodb-basics",
+      "mongoose-schema-deep-dive",
+      "mongoose-schema-model",
+      "pagination-filter-sort-projection",
+      "populate-vs-lookup",
+      "redis-caching",
+      "replica-sets-read-write-concern",
+      "security-headers-injection",
+      "sharding",
+      "transactions-and-sessions"
     ]
   },
   {
@@ -1633,8 +1950,16 @@ export const glossary: GlossaryTerm[] = [
     "term": "Mongoose",
     "definition": "An Object Data Modeling (ODM) library for MongoDB and Node.js providing strict schema validation, models, and middleware hooks.",
     "concepts": [
+      "connection-pooling",
+      "controller-vs-service-vs-model",
+      "mongodb-basics",
       "mongoose-schema-deep-dive",
-      "mongoose-schema-model"
+      "mongoose-schema-model",
+      "npm-package-json",
+      "populate-vs-lookup",
+      "routing",
+      "transactions-and-sessions",
+      "zero-downtime-deploy-migrations"
     ]
   },
   {
@@ -1658,6 +1983,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Multer",
     "definition": "Node.js middleware for handling multipart/form-data requests, primarily used for parsing and streaming file uploads.",
     "concepts": [
+      "body-parsing-json",
       "file-uploads"
     ]
   },
@@ -1698,8 +2024,19 @@ export const glossary: GlossaryTerm[] = [
     "term": "next()",
     "definition": "The continuation callback passed to Express middleware that passes execution control to the next handler in the stack.",
     "concepts": [
+      "async-error-wrapper",
+      "auth-middleware-rbac",
+      "centralized-error-handling",
       "error-handling-101",
-      "middleware-pipeline"
+      "event-loop-intro",
+      "express-bootstrapping",
+      "input-validation-zod",
+      "message-queues-jobs",
+      "middleware-pipeline",
+      "mongoose-schema-deep-dive",
+      "observability-tracing",
+      "rate-limiting",
+      "redis-caching"
     ]
   },
   {
@@ -1715,6 +2052,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "node_modules",
     "definition": "The directory where npm places downloaded and extracted package files, binaries, and nested transitive dependencies.",
     "concepts": [
+      "docker-ci-cd",
       "npm-package-json"
     ]
   },
@@ -1723,7 +2061,23 @@ export const glossary: GlossaryTerm[] = [
     "term": "Node.js",
     "definition": "An open-source, cross-platform JavaScript runtime built on Chrome's V8 engine that runs JS outside browser environments.",
     "concepts": [
-      "what-is-nodejs"
+      "backpressure",
+      "blocking-the-loop",
+      "callbacks-promises-async",
+      "client-server-model",
+      "clustering-and-pm2",
+      "connection-pooling",
+      "docker-ci-cd",
+      "error-handling-101",
+      "event-loop-deep-dive",
+      "event-loop-intro",
+      "hashing-and-salting",
+      "logging-and-config",
+      "operational-vs-programmer-errors",
+      "streams-and-buffers",
+      "what-is-nodejs",
+      "worker-threads-child-process",
+      "zero-downtime-deploy-migrations"
     ]
   },
   {
@@ -1731,6 +2085,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "NoSQL Injection",
     "definition": "A vulnerability where unvalidated client input containing MongoDB query operators (such as $gt or $ne) alters query logic.",
     "concepts": [
+      "pagination-filter-sort-projection",
       "security-headers-injection"
     ]
   },
@@ -1739,6 +2094,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "npm",
     "definition": "Node Package Manager — the default CLI tool and registry for publishing, installing, and managing JavaScript dependencies.",
     "concepts": [
+      "cookies-security-flags",
+      "docker-ci-cd",
+      "modules-cjs-vs-esm",
       "npm-package-json"
     ]
   },
@@ -1755,8 +2113,11 @@ export const glossary: GlossaryTerm[] = [
     "term": "ObjectId",
     "definition": "A 12-byte BSON identifier used as the default unique primary key (`_id`) for every document created in MongoDB.",
     "concepts": [
+      "embedding-vs-referencing",
       "mongodb-basics",
-      "mongoose-schema-model"
+      "mongoose-schema-model",
+      "routing",
+      "sharding"
     ]
   },
   {
@@ -1829,7 +2190,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Origin",
     "definition": "The combination of protocol scheme, domain hostname, and port number identifying the origin location of a web request.",
     "concepts": [
-      "cors-preflight"
+      "cors-preflight",
+      "security-headers-injection"
     ]
   },
   {
@@ -1853,6 +2215,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "package.json",
     "definition": "The manifest file defining metadata, executable scripts, dependencies, author details, and config for a Node.js project.",
     "concepts": [
+      "docker-ci-cd",
+      "modules-cjs-vs-esm",
       "npm-package-json"
     ]
   },
@@ -1901,6 +2265,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Pipeline",
     "definition": "An ordered sequence of middleware handlers processing a request step-by-step from arrival through response generation.",
     "concepts": [
+      "aggregation-pipeline",
+      "backpressure",
       "middleware-pipeline",
       "streams-and-buffers"
     ]
@@ -1944,9 +2310,11 @@ export const glossary: GlossaryTerm[] = [
     "term": "populate()",
     "definition": "Mongoose method that automatically replaces referenced ObjectIds in a document with the actual populated documents from other collections.",
     "concepts": [
+      "cache-aside-pattern",
       "embedding-vs-referencing",
       "mongoose-schema-model",
-      "populate-vs-lookup"
+      "populate-vs-lookup",
+      "redis-caching"
     ]
   },
   {
@@ -1955,8 +2323,11 @@ export const glossary: GlossaryTerm[] = [
     "definition": "A 16-bit numerical socket identifier routing incoming network packets to a specific application process on the host.",
     "concepts": [
       "client-server-model",
+      "clustering-and-pm2",
       "dns-tcp-http-journey",
-      "express-bootstrapping"
+      "environment-variables",
+      "express-bootstrapping",
+      "message-queues-jobs"
     ]
   },
   {
@@ -1964,7 +2335,22 @@ export const glossary: GlossaryTerm[] = [
     "term": "POST Method",
     "definition": "HTTP method used to submit data to the server to create a subordinate resource or trigger processing; neither safe nor idempotent.",
     "concepts": [
-      "idempotency-safe-methods"
+      "api-gateway-retries-circuit-breaker",
+      "auth-middleware-rbac",
+      "body-parsing-json",
+      "cap-theorem-acid-vs-base",
+      "cors-preflight",
+      "file-uploads",
+      "http-request-anatomy",
+      "http-response-status-codes",
+      "idempotency-keys",
+      "idempotency-safe-methods",
+      "message-queues-jobs",
+      "observability-tracing",
+      "rest-principles",
+      "routing",
+      "sessions-vs-jwt",
+      "testing-unit-vs-integration"
     ]
   },
   {
@@ -1996,7 +2382,19 @@ export const glossary: GlossaryTerm[] = [
     "term": "process.env",
     "definition": "A global object provided by Node.js exposing the user environment variables active for the current running process.",
     "concepts": [
-      "environment-variables"
+      "access-refresh-tokens",
+      "auth-middleware-rbac",
+      "connection-pooling",
+      "cookies-security-flags",
+      "environment-variables",
+      "express-bootstrapping",
+      "jwt-anatomy",
+      "logging-and-config",
+      "mongodb-basics",
+      "pubsub-and-fanout",
+      "redis-caching",
+      "sessions-vs-jwt",
+      "what-is-nodejs"
     ]
   },
   {
@@ -2012,7 +2410,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Process Manager",
     "definition": "A system service or daemon (systemd, PM2) that supervises application processes, monitors health, and restarts crashed instances automatically.",
     "concepts": [
-      "clustering-and-pm2"
+      "clustering-and-pm2",
+      "operational-vs-programmer-errors"
     ]
   },
   {
@@ -2036,7 +2435,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "$project Stage",
     "definition": "Aggregation pipeline stage reshaping output documents by including, excluding, renaming, or computing new derived fields.",
     "concepts": [
-      "aggregation-pipeline"
+      "aggregation-pipeline",
+      "modules-cjs-vs-esm",
+      "npm-package-json"
     ]
   },
   {
@@ -2052,7 +2453,16 @@ export const glossary: GlossaryTerm[] = [
     "term": "Promise",
     "definition": "An object representing the eventual completion (fulfillment) or failure (rejection) of an asynchronous operation and its value.",
     "concepts": [
-      "callbacks-promises-async"
+      "async-error-wrapper",
+      "blocking-the-loop",
+      "callbacks-promises-async",
+      "error-handling-101",
+      "event-loop-deep-dive",
+      "event-loop-intro",
+      "event-loop-phases-deep-dive",
+      "hashing-and-salting",
+      "pubsub-and-fanout",
+      "worker-threads-child-process"
     ]
   },
   {
@@ -2093,7 +2503,15 @@ export const glossary: GlossaryTerm[] = [
     "term": "PUT Method",
     "definition": "Idempotent HTTP method used to create or replace the entire target resource with the uploaded request payload.",
     "concepts": [
-      "idempotency-safe-methods"
+      "compound-index-esr-rule",
+      "cors-preflight",
+      "express-bootstrapping",
+      "http-request-anatomy",
+      "idempotency-safe-methods",
+      "jwt-anatomy",
+      "mongodb-basics",
+      "pagination-filter-sort-projection",
+      "rest-principles"
     ]
   },
   {
@@ -2109,7 +2527,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Quorum",
     "definition": "The minimum number of voting nodes in a distributed cluster required to agree before a state change or leader election can be committed.",
     "concepts": [
-      "cap-theorem-acid-vs-base"
+      "cap-theorem-acid-vs-base",
+      "replica-sets-read-write-concern"
     ]
   },
   {
@@ -2149,6 +2568,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Readable Stream",
     "definition": "An abstraction for a source of data from which sequential chunks can be consumed (e.g., fs.createReadStream or req).",
     "concepts": [
+      "backpressure",
       "streams-and-buffers"
     ]
   },
@@ -2165,7 +2585,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Redirect",
     "definition": "The process where a server responds with a 3xx code and Location header telling the client to repeat the request at another URL.",
     "concepts": [
-      "http-response-status-codes"
+      "http-response-status-codes",
+      "oauth2-sso-flows"
     ]
   },
   {
@@ -2173,8 +2594,16 @@ export const glossary: GlossaryTerm[] = [
     "term": "Redis",
     "definition": "In-memory key-value store commonly used as a cache, message broker, and session store in Node.js applications.",
     "concepts": [
+      "aggregation-pipeline",
       "cache-aside-pattern",
-      "redis-caching"
+      "cache-invalidation-strategies",
+      "clustering-and-pm2",
+      "idempotency-keys",
+      "pubsub-and-fanout",
+      "rate-limiting",
+      "redis-caching",
+      "sessions-vs-jwt",
+      "websockets-vs-sse-vs-polling"
     ]
   },
   {
@@ -2190,7 +2619,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "Redis Pub/Sub",
     "definition": "An ephemeral publish-subscribe system built into Redis using SUBSCRIBE and PUBLISH commands without message persistence.",
     "concepts": [
-      "pubsub-and-fanout"
+      "clustering-and-pm2",
+      "pubsub-and-fanout",
+      "websockets-vs-sse-vs-polling"
     ]
   },
   {
@@ -2222,6 +2653,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Document Reference",
     "definition": "Design pattern where documents store ObjectIds pointing to documents in another collection, resolved via Mongoose populate().",
     "concepts": [
+      "embedding-vs-referencing",
       "mongodb-basics"
     ]
   },
@@ -2230,7 +2662,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Document Referencing",
     "definition": "Normalizing data by storing foreign key ObjectIds in parent documents pointing to separate collection documents.",
     "concepts": [
-      "embedding-vs-referencing"
+      "embedding-vs-referencing",
+      "mongodb-basics"
     ]
   },
   {
@@ -2271,7 +2704,37 @@ export const glossary: GlossaryTerm[] = [
     "term": "Request",
     "definition": "A message sent by a client to a server asking for data or triggering an action, containing a method, URL, headers, and optional body.",
     "concepts": [
-      "http-request-anatomy"
+      "access-refresh-tokens",
+      "api-gateway-retries-circuit-breaker",
+      "async-error-wrapper",
+      "auth-middleware-rbac",
+      "blocking-the-loop",
+      "body-parsing-json",
+      "cache-aside-pattern",
+      "centralized-error-handling",
+      "connection-pooling",
+      "controller-vs-service-vs-model",
+      "cookies-security-flags",
+      "cors-preflight",
+      "dns-tcp-http-journey",
+      "embedding-vs-referencing",
+      "express-bootstrapping",
+      "horizontal-scaling-load-balancing",
+      "http-caching-etag",
+      "http-request-anatomy",
+      "idempotency-keys",
+      "input-validation-zod",
+      "jwt-anatomy",
+      "layered-architecture",
+      "middleware-pipeline",
+      "oauth2-sso-flows",
+      "observability-tracing",
+      "owasp-api-top-10",
+      "pagination-filter-sort-projection",
+      "routing",
+      "sessions-vs-jwt",
+      "testing-unit-vs-integration",
+      "worker-threads-child-process"
     ]
   },
   {
@@ -2287,7 +2750,12 @@ export const glossary: GlossaryTerm[] = [
     "term": "require()",
     "definition": "The CommonJS function used to synchronously load and evaluate an external module file or npm package at runtime.",
     "concepts": [
-      "modules-cjs-vs-esm"
+      "aggregation-pipeline",
+      "clustering-and-pm2",
+      "event-loop-phases-deep-dive",
+      "modules-cjs-vs-esm",
+      "operational-vs-programmer-errors",
+      "transactions-and-sessions"
     ]
   },
   {
@@ -2295,6 +2763,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Resource",
     "definition": "Any conceptual entity or object exposed by an API (e.g., /users, /orders) identifiable by a unique, stable URI.",
     "concepts": [
+      "auth-middleware-rbac",
+      "idempotency-safe-methods",
       "rest-principles"
     ]
   },
@@ -2303,8 +2773,22 @@ export const glossary: GlossaryTerm[] = [
     "term": "Response",
     "definition": "The message sent by the server back to the client containing an HTTP status code, headers, and optional payload.",
     "concepts": [
+      "access-refresh-tokens",
+      "api-gateway-retries-circuit-breaker",
+      "async-error-wrapper",
+      "auth-middleware-rbac",
+      "cache-aside-pattern",
+      "centralized-error-handling",
+      "client-server-model",
+      "controller-vs-service-vs-model",
+      "cors-preflight",
+      "dns-tcp-http-journey",
       "http-request-anatomy",
-      "http-response-status-codes"
+      "http-response-status-codes",
+      "input-validation-zod",
+      "layered-architecture",
+      "middleware-pipeline",
+      "pagination-filter-sort-projection"
     ]
   },
   {
@@ -2312,8 +2796,11 @@ export const glossary: GlossaryTerm[] = [
     "term": "REST",
     "definition": "Representational State Transfer — an architectural style for networked hypermedia systems emphasizing statelessness and standard HTTP.",
     "concepts": [
+      "client-server-model",
       "graphql-vs-rest-vs-grpc",
-      "rest-principles"
+      "http-response-status-codes",
+      "rest-principles",
+      "testing-unit-vs-integration"
     ]
   },
   {
@@ -2361,7 +2848,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Round-Robin Load Balancing",
     "definition": "A distribution algorithm that assigns each new incoming network connection sequentially to the next available worker process in the pool.",
     "concepts": [
-      "clustering-and-pm2"
+      "clustering-and-pm2",
+      "horizontal-scaling-load-balancing"
     ]
   },
   {
@@ -2369,6 +2857,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Route Handler",
     "definition": "The final middleware function attached to a route path responsible for generating and sending the HTTP response.",
     "concepts": [
+      "async-error-wrapper",
       "layered-architecture",
       "middleware-pipeline",
       "routing"
@@ -2380,7 +2869,9 @@ export const glossary: GlossaryTerm[] = [
     "definition": "Express.Router instance acting as an isolated mini-app capable of performing routing and mounting middleware independently.",
     "concepts": [
       "express-bootstrapping",
-      "routing"
+      "rest-principles",
+      "routing",
+      "zero-downtime-deploy-migrations"
     ]
   },
   {
@@ -2396,6 +2887,11 @@ export const glossary: GlossaryTerm[] = [
     "term": "Runtime",
     "definition": "The execution environment providing system libraries, memory management, and APIs required to run programs during execution.",
     "concepts": [
+      "docker-ci-cd",
+      "modules-cjs-vs-esm",
+      "mongodb-basics",
+      "mongoose-schema-deep-dive",
+      "operational-vs-programmer-errors",
       "what-is-nodejs"
     ]
   },
@@ -2470,6 +2966,10 @@ export const glossary: GlossaryTerm[] = [
     "definition": "A Mongoose configuration object mapping out document fields, types, default values, validators, and custom instance methods.",
     "concepts": [
       "controller-vs-service-vs-model",
+      "embedding-vs-referencing",
+      "input-validation-zod",
+      "logging-and-config",
+      "mongodb-basics",
       "mongoose-schema-deep-dive",
       "mongoose-schema-model"
     ]
@@ -2495,7 +2995,11 @@ export const glossary: GlossaryTerm[] = [
     "term": "Secret",
     "definition": "Sensitive credentials such as private API keys, database connection strings, and encryption passwords requiring strict protection.",
     "concepts": [
-      "environment-variables"
+      "environment-variables",
+      "hashing-and-salting",
+      "jwt-anatomy",
+      "pagination-filter-sort-projection",
+      "sessions-vs-jwt"
     ]
   },
   {
@@ -2535,7 +3039,35 @@ export const glossary: GlossaryTerm[] = [
     "term": "Server",
     "definition": "A computer program or host that listens for incoming client requests, executes logic, accesses databases, and serves responses.",
     "concepts": [
-      "client-server-model"
+      "blocking-the-loop",
+      "centralized-error-handling",
+      "client-server-model",
+      "clustering-and-pm2",
+      "connection-pooling",
+      "cors-preflight",
+      "dns-tcp-http-journey",
+      "docker-ci-cd",
+      "environment-variables",
+      "express-bootstrapping",
+      "file-uploads",
+      "graphql-vs-rest-vs-grpc",
+      "horizontal-scaling-load-balancing",
+      "http-caching-etag",
+      "http-request-anatomy",
+      "http-response-status-codes",
+      "idempotency-keys",
+      "jwt-anatomy",
+      "oauth2-sso-flows",
+      "operational-vs-programmer-errors",
+      "owasp-api-top-10",
+      "populate-vs-lookup",
+      "rate-limiting",
+      "sessions-vs-jwt",
+      "sharding",
+      "transactions-and-sessions",
+      "websockets-vs-sse-vs-polling",
+      "what-is-nodejs",
+      "zero-downtime-deploy-migrations"
     ]
   },
   {
@@ -2560,6 +3092,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Server-Side Sessions",
     "definition": "A stateful authentication pattern where user state is stored on the server (in Redis or DB) and tracked via a cookie identifier.",
     "concepts": [
+      "client-server-model",
+      "horizontal-scaling-load-balancing",
       "sessions-vs-jwt",
       "transactions-and-sessions"
     ]
@@ -2650,6 +3184,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "Query Sorting",
     "definition": "Ordering database query result sets in ascending (1) or descending (-1) order based on specified document keys.",
     "concepts": [
+      "aggregation-pipeline",
+      "compound-index-esr-rule",
+      "file-uploads",
       "pagination-filter-sort-projection"
     ]
   },
@@ -2692,7 +3229,8 @@ export const glossary: GlossaryTerm[] = [
     "definition": "Cached data that no longer matches the source of truth (the database). Managed via TTL or explicit cache invalidation.",
     "concepts": [
       "cache-aside-pattern",
-      "cache-invalidation-strategies"
+      "cache-invalidation-strategies",
+      "replica-sets-read-write-concern"
     ]
   },
   {
@@ -2716,6 +3254,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Stateless",
     "definition": "Core architectural constraint where the server stores no client session context; each request carries complete auth and state.",
     "concepts": [
+      "client-server-model",
+      "clustering-and-pm2",
       "horizontal-scaling-load-balancing",
       "rest-principles",
       "sessions-vs-jwt"
@@ -2743,7 +3283,10 @@ export const glossary: GlossaryTerm[] = [
     "term": "Data Streaming",
     "definition": "Processing data sequentially chunk-by-chunk without buffering entire payloads into application process memory.",
     "concepts": [
-      "file-uploads"
+      "file-uploads",
+      "logging-and-config",
+      "streams-and-buffers",
+      "websockets-vs-sse-vs-polling"
     ]
   },
   {
@@ -2785,7 +3328,9 @@ export const glossary: GlossaryTerm[] = [
     "definition": "Transmission Control Protocol — a reliable, connection-oriented transport protocol ensuring ordered, loss-free byte transmission.",
     "concepts": [
       "client-server-model",
-      "dns-tcp-http-journey"
+      "connection-pooling",
+      "dns-tcp-http-journey",
+      "websockets-vs-sse-vs-polling"
     ]
   },
   {
@@ -2817,6 +3362,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Thread Pool",
     "definition": "A managed collection of background worker threads in libuv used to execute blocking operations like file I/O, DNS, and crypto.",
     "concepts": [
+      "blocking-the-loop",
       "what-is-nodejs",
       "worker-threads-child-process"
     ]
@@ -2844,6 +3390,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "TLS",
     "definition": "Transport Layer Security — cryptographic protocol securing communications over computer networks via encryption and server certificates.",
     "concepts": [
+      "connection-pooling",
       "dns-tcp-http-journey"
     ]
   },
@@ -2892,6 +3439,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "try/catch",
     "definition": "Control flow block used to catch and handle runtime exceptions and rejected promises without crashing the running process.",
     "concepts": [
+      "async-error-wrapper",
+      "callbacks-promises-async",
+      "centralized-error-handling",
       "error-handling-101"
     ]
   },
@@ -2901,6 +3451,7 @@ export const glossary: GlossaryTerm[] = [
     "definition": "Time To Live — how long a cached value stays valid before expiring. Prevents stale data from being served.",
     "concepts": [
       "cache-aside-pattern",
+      "idempotency-keys",
       "redis-caching"
     ]
   },
@@ -2917,7 +3468,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "401 Unauthorized",
     "definition": "HTTP status code indicating the request lacks valid authentication credentials or the supplied token is expired.",
     "concepts": [
-      "auth-middleware-rbac"
+      "auth-middleware-rbac",
+      "middleware-pipeline"
     ]
   },
   {
@@ -2949,6 +3501,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Unit Testing",
     "definition": "Testing isolated individual functions, units, or modules in isolation from external services by mocking dependencies.",
     "concepts": [
+      "express-bootstrapping",
+      "layered-architecture",
       "testing-unit-vs-integration"
     ]
   },
@@ -2957,7 +3511,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "$unwind Stage",
     "definition": "MongoDB aggregation stage deconstructing an array field from input documents to output one document per array element.",
     "concepts": [
-      "aggregation-pipeline"
+      "aggregation-pipeline",
+      "populate-vs-lookup"
     ]
   },
   {
@@ -2965,7 +3520,15 @@ export const glossary: GlossaryTerm[] = [
     "term": "URL",
     "definition": "Uniform Resource Locator — the unique web address pinpointing a resource: protocol scheme, hostname, port, path, and query.",
     "concepts": [
-      "http-request-anatomy"
+      "dns-tcp-http-journey",
+      "file-uploads",
+      "http-request-anatomy",
+      "middleware-pipeline",
+      "modules-cjs-vs-esm",
+      "pubsub-and-fanout",
+      "redis-caching",
+      "rest-principles",
+      "routing"
     ]
   },
   {
@@ -2981,7 +3544,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "URL-Encoded",
     "definition": "Data format typically sent by HTML forms where keys and values are encoded in key=value pairs joined with ampersands.",
     "concepts": [
-      "body-parsing-json"
+      "body-parsing-json",
+      "express-bootstrapping"
     ]
   },
   {
@@ -2989,7 +3553,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "V8 Engine",
     "definition": "Google's high-performance open-source JavaScript and WebAssembly engine written in C++, compiling JS directly to native machine code.",
     "concepts": [
-      "what-is-nodejs"
+      "what-is-nodejs",
+      "worker-threads-child-process"
     ]
   },
   {
@@ -2997,6 +3562,10 @@ export const glossary: GlossaryTerm[] = [
     "term": "Validation",
     "definition": "Verification logic executed before saving documents into MongoDB ensuring required fields, data types, and custom constraints match.",
     "concepts": [
+      "auth-middleware-rbac",
+      "http-caching-etag",
+      "input-validation-zod",
+      "mongoose-schema-deep-dive",
       "mongoose-schema-model"
     ]
   },
@@ -3013,6 +3582,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Mongoose Virtuals",
     "definition": "Computed document properties that can be read and set like regular fields but are not persisted into MongoDB storage.",
     "concepts": [
+      "controller-vs-service-vs-model",
       "mongoose-schema-deep-dive"
     ]
   },
@@ -3053,6 +3623,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "WebSocket Protocol",
     "definition": "A persistent, bi-directional, full-duplex TCP communication protocol initiated via an HTTP Upgrade handshake.",
     "concepts": [
+      "clustering-and-pm2",
+      "controller-vs-service-vs-model",
       "websockets-vs-sse-vs-polling"
     ]
   },
@@ -3061,6 +3633,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Wildcard Route",
     "definition": "A catch-all route pattern (such as *) that matches any path, typically placed last to serve 404 responses or fallback pages.",
     "concepts": [
+      "cors-preflight",
       "routing"
     ]
   },
@@ -3077,6 +3650,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Worker Threads",
     "definition": "A Node.js module (worker_threads) enabling true multi-threaded JavaScript execution within a single OS process sharing memory buffers.",
     "concepts": [
+      "event-loop-deep-dive",
+      "what-is-nodejs",
       "worker-threads-child-process"
     ]
   },
@@ -3117,7 +3692,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "Cross-Site Scripting (XSS)",
     "definition": "A vulnerability where an attacker injects malicious scripts into trusted websites, executing within victims' browsers.",
     "concepts": [
-      "cookies-security-flags"
+      "access-refresh-tokens",
+      "cookies-security-flags",
+      "jwt-anatomy"
     ]
   },
   {
