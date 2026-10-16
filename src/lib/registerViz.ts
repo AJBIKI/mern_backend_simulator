@@ -3,6 +3,8 @@ import { SequenceSwimlane } from '@/components/viz/SequenceSwimlane'
 import { AnimatedPipeline } from '@/components/viz/AnimatedPipeline'
 import { EventLoopClock } from '@/components/viz/EventLoopClock'
 import { QueueLanes } from '@/components/viz/QueueLanes'
+import { TwoPanelCompare } from '@/components/viz/TwoPanelCompare'
+import { URLMatcher } from '@/components/viz/URLMatcher'
 import type { VizStep } from '@/content/types'
 
 export interface VizProps {
@@ -18,6 +20,8 @@ const registry: Record<string, ComponentType<VizProps>> = {
   AnimatedPipeline,
   EventLoopClock,
   QueueLanes,
+  TwoPanelCompare,
+  URLMatcher,
 }
 
 export function getVizComponent(key: string): ComponentType<VizProps> | null {

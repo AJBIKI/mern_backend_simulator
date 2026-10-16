@@ -36,4 +36,5 @@ export interface GlossaryTerm {
   id: string;
   term: string;
   definition: string;      // 2 lines max
+  concepts?: string[];     // concept IDs where this term is referenced
 }
