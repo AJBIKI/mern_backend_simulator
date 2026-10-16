@@ -5,6 +5,10 @@ import { EventLoopClock } from '@/components/viz/EventLoopClock'
 import { QueueLanes } from '@/components/viz/QueueLanes'
 import { TwoPanelCompare } from '@/components/viz/TwoPanelCompare'
 import { URLMatcher } from '@/components/viz/URLMatcher'
+import { StateMachine } from '@/components/viz/StateMachine'
+import { TreeTraversal } from '@/components/viz/TreeTraversal'
+import { CacheFlow } from '@/components/viz/CacheFlow'
+import { TokenBucket } from '@/components/viz/TokenBucket'
 import type { VizStep } from '@/content/types'
 
 export interface VizProps {
@@ -22,6 +26,10 @@ const registry: Record<string, ComponentType<VizProps>> = {
   QueueLanes,
   TwoPanelCompare,
   URLMatcher,
+  StateMachine,
+  TreeTraversal,
+  CacheFlow,
+  TokenBucket,
 }
 
 export function getVizComponent(key: string): ComponentType<VizProps> | null {
