@@ -90,7 +90,7 @@ app.get('/users/:id', async (req, res) => {
     level: 1,
     order: 2,
     title: 'Middleware Pipeline',
-    oneLiner: 'Middleware functions process a request in a chain — each one passes control to the next.',
+    oneLiner: 'Middleware functions process requests in sequence, each passing control to the next handler.',
     mentalModel:
       "Picture airport security: passport control, X-ray scan, boarding gate check — each station does one job and waves you through (or stops you). Express middleware works the same way: each function either calls next() to continue or sends a response to stop the chain.",
     viz: {
@@ -1461,7 +1461,7 @@ await users.deleteOne({ email: 'alice@x.com' })`,
     level: 1,
     order: 18,
     title: 'Mongoose Schema & Model',
-    oneLiner: 'A Mongoose Schema defines the shape; the Model is the class used to query and save documents.',
+    oneLiner: 'The Schema defines data structure; the Model executes queries and persists MongoDB documents.',
     mentalModel:
       'A Schema is a cookie cutter — it defines the shape of every cookie (document). A Model is the machine that uses the cutter: it creates cookies, finds them in the jar (collection), updates them, and deletes them.',
     viz: {
@@ -1534,7 +1534,7 @@ await User.updateOne({ _id: user._id }, { $set: { role: 'admin' } })`,
     level: 1,
     order: 19,
     title: 'Error Handling 101',
-    oneLiner: 'Errors in Express need to be caught and forwarded to error middleware — they don\'t bubble up automatically.',
+    oneLiner: 'Express errors must be caught and forwarded to error middleware; they never bubble automatically.',
     mentalModel:
       'Error handling is like a safety net in a circus act. Without it, a fall (thrown error) ends the show. With a net (error middleware), the act continues — the performer is caught, the audience sees a graceful recovery, and the error is logged backstage.',
     viz: {
@@ -1608,7 +1608,7 @@ app.use((err: Error, req, res, next) => {
     level: 1,
     order: 20,
     title: 'CORS & Preflight',
-    oneLiner: 'CORS is the browser\'s security mechanism that blocks cross-origin requests unless the server explicitly allows them.',
+    oneLiner: 'Browsers block cross-origin requests unless target servers explicitly permit them via response headers.',
     mentalModel:
       'CORS is like a club bouncer: the browser asks "is my origin on the guest list?" before it lets your code make requests to a different domain. The server must respond with the right headers — the bouncer\'s approval stamp.',
     viz: {

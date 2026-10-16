@@ -1410,7 +1410,7 @@ export const restrictTo = (...roles: string[]) => {
     level: 2,
     order: 18,
     title: 'Rate Limiting',
-    oneLiner: 'Throttle requests per IP or API key to protect servers from brute force and DoS attacks.',
+    oneLiner: 'Throttle client requests by IP or key to prevent server overload and abuse.',
     mentalModel:
       'A subway turnstile that only allows one passenger through every 5 seconds. If a crowd rushes the gate, the gate locks until the timer allows the next person through.',
     viz: {

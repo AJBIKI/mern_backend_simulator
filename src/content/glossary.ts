@@ -86,6 +86,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "ACID Guarantees",
     "definition": "Atomicity, Consistency, Isolation, and Durability — properties ensuring database transactions process reliably without corruption.",
     "concepts": [
+      "cap-theorem-acid-vs-base",
       "transactions-and-sessions"
     ]
   },
@@ -94,8 +95,24 @@ export const glossary: GlossaryTerm[] = [
     "term": "Aggregation Pipeline",
     "definition": "A multi-stage document processing framework in MongoDB that filters, reshapes, groups, and projects collection data.",
     "concepts": [
-      "populate-vs-lookup",
-      "aggregation-pipeline"
+      "aggregation-pipeline",
+      "populate-vs-lookup"
+    ]
+  },
+  {
+    "id": "alpine",
+    "term": "Alpine Linux",
+    "definition": "A security-oriented, ultra-lightweight Linux distribution (~5MB) frequently used as the base image for minimal production Docker containers.",
+    "concepts": [
+      "docker-ci-cd"
+    ]
+  },
+  {
+    "id": "api-gateway",
+    "term": "API Gateway",
+    "definition": "A single front-door entry point that handles routing, rate limiting, authentication, and SSL termination for internal backend microservices.",
+    "concepts": [
+      "api-gateway-retries-circuit-breaker"
     ]
   },
   {
@@ -148,6 +165,22 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "authorization-code",
+    "term": "Authorization Code Flow",
+    "definition": "The most secure OAuth 2.0 flow where a temporary code issued to the browser is exchanged directly by the backend for access tokens.",
+    "concepts": [
+      "oauth2-sso-flows"
+    ]
+  },
+  {
+    "id": "auto-scaling",
+    "term": "Auto-Scaling",
+    "definition": "Dynamically adjusting the number of active server containers or VMs in response to real-time traffic spikes or CPU thresholds.",
+    "concepts": [
+      "horizontal-scaling-load-balancing"
+    ]
+  },
+  {
     "id": "b-tree",
     "term": "B-Tree",
     "definition": "The balanced tree data structure MongoDB uses for indexes. Keeps data sorted and allows logarithmic-time lookups.",
@@ -157,11 +190,27 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "backpressure",
+    "term": "Backpressure",
+    "definition": "A flow-control mechanism signaling the fast data producer to pause reading when the slow consumer's internal buffer exceeds capacity.",
+    "concepts": [
+      "backpressure"
+    ]
+  },
+  {
     "id": "bad-request",
     "term": "400 Bad Request",
     "definition": "HTTP response code sent when the server cannot process a request due to client error, invalid syntax, or schema violations.",
     "concepts": [
       "input-validation-zod"
+    ]
+  },
+  {
+    "id": "base",
+    "term": "BASE Architecture",
+    "definition": "An alternative to ACID prioritizing availability: Basically Available, Soft state, and Eventual consistency (common in NoSQL).",
+    "concepts": [
+      "cap-theorem-acid-vs-base"
     ]
   },
   {
@@ -180,6 +229,14 @@ export const glossary: GlossaryTerm[] = [
       "access-refresh-tokens",
       "auth-middleware-rbac",
       "jwt-anatomy"
+    ]
+  },
+  {
+    "id": "blocking-loop",
+    "term": "Blocking the Event Loop",
+    "definition": "Executing synchronous, long-running operations on Node's single JavaScript thread, stalling all concurrent HTTP requests and I/O handlers.",
+    "concepts": [
+      "blocking-the-loop"
     ]
   },
   {
@@ -207,6 +264,30 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "bola",
+    "term": "BOLA (Broken Object Level Authorization)",
+    "definition": "The #1 API security vulnerability where endpoints expose database IDs without verifying if the authenticated user owns that specific object.",
+    "concepts": [
+      "owasp-api-top-10"
+    ]
+  },
+  {
+    "id": "bounded-context",
+    "term": "Bounded Context",
+    "definition": "A Domain-Driven Design boundary within which a specific domain model applies consistently, defining microservice boundaries.",
+    "concepts": [
+      "microservices-vs-monolith"
+    ]
+  },
+  {
+    "id": "broken-auth",
+    "term": "Broken Authentication",
+    "definition": "Security weaknesses in authentication implementations such as weak password hashing, missing rate limits on login, or exposed tokens.",
+    "concepts": [
+      "owasp-api-top-10"
+    ]
+  },
+  {
     "id": "brute-force",
     "term": "Brute-Force Attack",
     "definition": "An automated trial-and-error attack attempting thousands of credential combinations until the correct password or key is found.",
@@ -220,6 +301,30 @@ export const glossary: GlossaryTerm[] = [
     "definition": "Binary JSON — binary-encoded serialization format used by MongoDB to store documents and perform remote procedure calls.",
     "concepts": [
       "mongodb-basics"
+    ]
+  },
+  {
+    "id": "buffer-overflow",
+    "term": "Buffer Overflow (Streams)",
+    "definition": "Memory exhaustion occurring when stream chunks accumulate indefinitely without backpressure throttling, leading to process crashes.",
+    "concepts": [
+      "backpressure"
+    ]
+  },
+  {
+    "id": "buffers",
+    "term": "Buffer",
+    "definition": "Fixed-size raw binary memory allocations outside V8's garbage-collected heap, used for handling binary network packets and disk blocks.",
+    "concepts": [
+      "streams-and-buffers"
+    ]
+  },
+  {
+    "id": "bullmq",
+    "term": "BullMQ",
+    "definition": "A Redis-backed, TypeScript-first message queue and job scheduler for Node.js supporting atomic locks, delayed jobs, and retries.",
+    "concepts": [
+      "message-queues-jobs"
     ]
   },
   {
@@ -243,7 +348,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "Cache-Aside",
     "definition": "Read pattern: app checks cache first; on miss, fetches from DB and populates cache. Application controls cache population.",
     "concepts": [
-      "cache-aside-pattern"
+      "cache-aside-pattern",
+      "cache-invalidation-strategies",
+      "redis-caching"
     ]
   },
   {
@@ -259,7 +366,16 @@ export const glossary: GlossaryTerm[] = [
     "term": "Cache Hit",
     "definition": "When the requested data is found in the cache — no DB query needed, response is instant.",
     "concepts": [
-      "cache-aside-pattern"
+      "cache-aside-pattern",
+      "redis-caching"
+    ]
+  },
+  {
+    "id": "cache-invalidation",
+    "term": "Cache Invalidation",
+    "definition": "The process of removing or updating stale cache entries when the authoritative database record is updated or deleted.",
+    "concepts": [
+      "cache-invalidation-strategies"
     ]
   },
   {
@@ -267,7 +383,16 @@ export const glossary: GlossaryTerm[] = [
     "term": "Cache Miss",
     "definition": "When data is NOT in cache — the app must fall back to the database and then store the result in cache.",
     "concepts": [
-      "cache-aside-pattern"
+      "cache-aside-pattern",
+      "redis-caching"
+    ]
+  },
+  {
+    "id": "cache-stampede",
+    "term": "Cache Stampede (Thundering Herd)",
+    "definition": "A failure mode where multiple concurrent requests simultaneously miss an expired cache key and overwhelm the database with identical queries.",
+    "concepts": [
+      "redis-caching"
     ]
   },
   {
@@ -275,8 +400,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "Call Stack",
     "definition": "A Last-In-First-Out data structure tracking currently executing functions; JavaScript executes one stack frame at a time.",
     "concepts": [
-      "event-loop-intro",
-      "event-loop-deep-dive"
+      "blocking-the-loop",
+      "event-loop-deep-dive",
+      "event-loop-intro"
     ]
   },
   {
@@ -296,6 +422,22 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "cap-theorem",
+    "term": "CAP Theorem",
+    "definition": "A distributed systems principle stating that a network partition (P) forces a system to choose between Consistency (C) or Availability (A).",
+    "concepts": [
+      "cap-theorem-acid-vs-base"
+    ]
+  },
+  {
+    "id": "cascading-failure",
+    "term": "Cascading Failure",
+    "definition": "A failure scenario where a crash or slowdown in one downstream component triggers successive failures across upstream services.",
+    "concepts": [
+      "api-gateway-retries-circuit-breaker"
+    ]
+  },
+  {
     "id": "catch-async",
     "term": "catchAsync Utility",
     "definition": "A higher-order wrapper function wrapping async Express controllers to catch rejected promises and pipe them to next(err).",
@@ -309,6 +451,38 @@ export const glossary: GlossaryTerm[] = [
     "definition": "An architectural pattern funneling all application exceptions into a single global middleware handler for consistent logging and responses.",
     "concepts": [
       "centralized-error-handling"
+    ]
+  },
+  {
+    "id": "check-phase",
+    "term": "Check Phase",
+    "definition": "The event loop phase dedicated exclusively to executing callbacks scheduled via setImmediate() right after poll I/O completes.",
+    "concepts": [
+      "event-loop-phases-deep-dive"
+    ]
+  },
+  {
+    "id": "child-process",
+    "term": "Child Process",
+    "definition": "An OS-level sub-process spawned by Node (via fork or exec) with its own isolated memory space, PID, and IPC communication channel.",
+    "concepts": [
+      "worker-threads-child-process"
+    ]
+  },
+  {
+    "id": "ci-cd",
+    "term": "CI/CD Pipeline",
+    "definition": "Continuous Integration and Continuous Delivery: automating testing, building, and deployment workflows triggered by repository code changes.",
+    "concepts": [
+      "docker-ci-cd"
+    ]
+  },
+  {
+    "id": "circuit-breaker",
+    "term": "Circuit Breaker Pattern",
+    "definition": "A resilience pattern that halts calls to a failing downstream service (opening the circuit) to prevent cascade failure and allow recovery.",
+    "concepts": [
+      "api-gateway-retries-circuit-breaker"
     ]
   },
   {
@@ -341,6 +515,30 @@ export const glossary: GlossaryTerm[] = [
     "definition": "The consuming device or software (such as a web browser or mobile app) that initiates requests to a remote server.",
     "concepts": [
       "client-server-model"
+    ]
+  },
+  {
+    "id": "client-secret",
+    "term": "OAuth Client Secret",
+    "definition": "A confidential cryptographic secret known only to the application backend and the OAuth authorization server used to authenticate the app.",
+    "concepts": [
+      "oauth2-sso-flows"
+    ]
+  },
+  {
+    "id": "close-phase",
+    "term": "Close Phase",
+    "definition": "The final phase of an event loop tick where cleanup handlers (e.g., socket.on('close')) are executed before starting a new tick.",
+    "concepts": [
+      "event-loop-phases-deep-dive"
+    ]
+  },
+  {
+    "id": "clustering",
+    "term": "Node.js Cluster Module",
+    "definition": "A built-in module allowing a primary process to fork worker processes across CPU cores, all transparently sharing the same server port.",
+    "concepts": [
+      "clustering-and-pm2"
     ]
   },
   {
@@ -386,6 +584,30 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "config-servers",
+    "term": "Config Servers",
+    "definition": "A dedicated replica set storing cluster metadata, chunk ranges, and routing mappings for a sharded MongoDB cluster.",
+    "concepts": [
+      "sharding"
+    ]
+  },
+  {
+    "id": "connection-pooling",
+    "term": "Connection Pooling",
+    "definition": "Maintaining a cache of open database socket connections reused across queries to eliminate expensive TCP and TLS handshake latencies.",
+    "concepts": [
+      "connection-pooling"
+    ]
+  },
+  {
+    "id": "containerization",
+    "term": "Containerization",
+    "definition": "Operating-system-level virtualization encapsulating an application and its runtime environment in isolated containers sharing the host OS kernel.",
+    "concepts": [
+      "docker-ci-cd"
+    ]
+  },
+  {
     "id": "content-type",
     "term": "Content-Type",
     "definition": "HTTP header indicating the media type (MIME type) of the payload, informing the receiver how to parse the request body.",
@@ -398,8 +620,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Controller",
     "definition": "The application component responsible for parsing incoming HTTP requests, validating inputs, and returning formatted HTTP responses.",
     "concepts": [
-      "layered-architecture",
-      "controller-vs-service-vs-model"
+      "controller-vs-service-vs-model",
+      "layered-architecture"
     ]
   },
   {
@@ -408,6 +630,14 @@ export const glossary: GlossaryTerm[] = [
     "definition": "Small packets of state data stored in client browsers and automatically sent along with subsequent requests to matching origins.",
     "concepts": [
       "cookies-security-flags"
+    ]
+  },
+  {
+    "id": "correlation-id",
+    "term": "Correlation ID / Trace ID",
+    "definition": "A unique identifier injected into HTTP headers (e.g., x-trace-id) passed across service boundaries to stitch fragmented logs into one trace.",
+    "concepts": [
+      "observability-tracing"
     ]
   },
   {
@@ -424,6 +654,14 @@ export const glossary: GlossaryTerm[] = [
     "definition": "An integer parameter (work factor) determining the number of hashing rounds (2^N), tuning computational difficulty over time.",
     "concepts": [
       "hashing-and-salting"
+    ]
+  },
+  {
+    "id": "cpu-bound",
+    "term": "CPU-Bound Workload",
+    "definition": "Tasks whose completion time depends solely on processor speed (cryptography, image processing) rather than network or disk wait times.",
+    "concepts": [
+      "blocking-the-loop"
     ]
   },
   {
@@ -459,11 +697,43 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "database-per-service",
+    "term": "Database-Per-Service",
+    "definition": "A microservices design pattern ensuring each service manages its own private database, preventing shared schema coupling.",
+    "concepts": [
+      "microservices-vs-monolith"
+    ]
+  },
+  {
     "id": "ddos",
     "term": "DDoS Attack",
     "definition": "Distributed Denial of Service — an attack flooding server bandwidth or compute capacity from multiple distributed sources.",
     "concepts": [
       "rate-limiting"
+    ]
+  },
+  {
+    "id": "dead-letter-queue",
+    "term": "Dead Letter Queue (DLQ)",
+    "definition": "A secondary holding queue where messages that fail all configured retry attempts are routed for developer inspection and alerting.",
+    "concepts": [
+      "message-queues-jobs"
+    ]
+  },
+  {
+    "id": "decoupling",
+    "term": "Architectural Decoupling",
+    "definition": "Minimizing direct dependencies between software components so changes or failures in one module do not cascade to others.",
+    "concepts": [
+      "pubsub-and-fanout"
+    ]
+  },
+  {
+    "id": "deduplication",
+    "term": "Request Deduplication",
+    "definition": "Identifying and discarding redundant or duplicate requests within a time window using hashes, tokens, or unique idempotency keys.",
+    "concepts": [
+      "idempotency-keys"
     ]
   },
   {
@@ -491,11 +761,43 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "distributed-lock",
+    "term": "Distributed Lock",
+    "definition": "A synchronization primitive (such as Redis Redlock) ensuring only one instance across a distributed cluster executes a critical section.",
+    "concepts": [
+      "idempotency-keys"
+    ]
+  },
+  {
+    "id": "distributed-systems",
+    "term": "Distributed Systems",
+    "definition": "A collection of autonomous computing nodes communicating over a network that appears to end users as a single coherent system.",
+    "concepts": [
+      "microservices-vs-monolith"
+    ]
+  },
+  {
+    "id": "distributed-tracing",
+    "term": "Distributed Tracing",
+    "definition": "Tracking the complete path and timing of a single user request as it traverses across multiple microservices, databases, and queues.",
+    "concepts": [
+      "observability-tracing"
+    ]
+  },
+  {
     "id": "dns",
     "term": "DNS",
     "definition": "Domain Name System — the distributed internet directory that translates human-readable hostnames into machine-routable IP addresses.",
     "concepts": [
       "dns-tcp-http-journey"
+    ]
+  },
+  {
+    "id": "docker",
+    "term": "Docker",
+    "definition": "A containerization platform that packages application code and all its system dependencies into portable, isolated container images.",
+    "concepts": [
+      "docker-ci-cd"
     ]
   },
   {
@@ -513,6 +815,14 @@ export const glossary: GlossaryTerm[] = [
     "definition": "Popular zero-dependency npm package that loads environment variables from a root .env file into the process.env runtime object.",
     "concepts": [
       "environment-variables"
+    ]
+  },
+  {
+    "id": "drain-event",
+    "term": "drain Event",
+    "definition": "An event emitted by a writable stream when its internal write buffer empties below highWaterMark, signaling the producer to resume sending.",
+    "concepts": [
+      "backpressure"
     ]
   },
   {
@@ -552,11 +862,11 @@ export const glossary: GlossaryTerm[] = [
     "term": "Error Middleware",
     "definition": "Special 4-parameter Express middleware (err, req, res, next) invoked whenever next(err) is called or an error is thrown.",
     "concepts": [
-      "middleware-pipeline",
-      "express-bootstrapping",
-      "error-handling-101",
+      "async-error-wrapper",
       "centralized-error-handling",
-      "async-error-wrapper"
+      "error-handling-101",
+      "express-bootstrapping",
+      "middleware-pipeline"
     ]
   },
   {
@@ -584,13 +894,40 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "event-driven",
+    "term": "Event-Driven Architecture",
+    "definition": "A software architecture where decoupled components communicate primarily by producing and reacting to state-change events.",
+    "concepts": [
+      "pubsub-and-fanout"
+    ]
+  },
+  {
     "id": "event-loop",
     "term": "Event Loop",
     "definition": "The core scheduling loop in Node.js coordinating callbacks, async events, and phase transitions on a single JavaScript thread.",
     "concepts": [
-      "what-is-nodejs",
+      "blocking-the-loop",
+      "event-loop-deep-dive",
       "event-loop-intro",
-      "event-loop-deep-dive"
+      "event-loop-phases-deep-dive",
+      "what-is-nodejs"
+    ]
+  },
+  {
+    "id": "eventual-consistency",
+    "term": "Eventual Consistency",
+    "definition": "A consistency model guaranteeing that all distributed replicas or caches will eventually converge to identical state given no new updates.",
+    "concepts": [
+      "cache-invalidation-strategies",
+      "cap-theorem-acid-vs-base"
+    ]
+  },
+  {
+    "id": "expand-contract",
+    "term": "Expand and Contract Pattern",
+    "definition": "A database migration technique that introduces non-breaking schema changes first (expand), migrates code, and removes obsolete columns later (contract).",
+    "concepts": [
+      "zero-downtime-deploy-migrations"
     ]
   },
   {
@@ -599,6 +936,14 @@ export const glossary: GlossaryTerm[] = [
     "definition": "MongoDB method that returns the query execution plan, showing whether MongoDB used COLLSCAN or IXSCAN.",
     "concepts": [
       "indexing-collscan-ixscan"
+    ]
+  },
+  {
+    "id": "exponential-backoff",
+    "term": "Exponential Backoff",
+    "definition": "A retry algorithm that exponentially increases delay between failed attempts (e.g., 1s, 2s, 4s, 8s) to give troubled services time to recover.",
+    "concepts": [
+      "message-queues-jobs"
     ]
   },
   {
@@ -623,6 +968,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Fail-Fast Principle",
     "definition": "A software design philosophy advocating immediate termination or throwing at the earliest sign of failure to prevent corrupted states.",
     "concepts": [
+      "api-gateway-retries-circuit-breaker",
       "operational-vs-programmer-errors"
     ]
   },
@@ -632,6 +978,14 @@ export const glossary: GlossaryTerm[] = [
     "definition": "A system architecture pattern that gracefully degrades or defaults to a secure state when unexpected errors occur.",
     "concepts": [
       "centralized-error-handling"
+    ]
+  },
+  {
+    "id": "fan-out",
+    "term": "Fan-Out Pattern",
+    "definition": "Delivering a single published message simultaneously to multiple independent subscriber queues or consumer services.",
+    "concepts": [
+      "pubsub-and-fanout"
     ]
   },
   {
@@ -651,6 +1005,14 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "flow-control",
+    "term": "Flow Control",
+    "definition": "Rate-matching protocols ensuring a sender does not overwhelm a slower receiver with more data than its buffers can accommodate.",
+    "concepts": [
+      "backpressure"
+    ]
+  },
+  {
     "id": "forbidden",
     "term": "403 Forbidden",
     "definition": "HTTP status code indicating the client is authenticated, but their account role or scope does not permit performing the action.",
@@ -664,6 +1026,22 @@ export const glossary: GlossaryTerm[] = [
     "definition": "The determination of whether a cached HTTP response can be served directly without revalidating with the origin server.",
     "concepts": [
       "http-caching-etag"
+    ]
+  },
+  {
+    "id": "full-duplex",
+    "term": "Full-Duplex Communication",
+    "definition": "A transmission mode allowing both client and server to send messages simultaneously over an open channel without waiting for turn-taking.",
+    "concepts": [
+      "websockets-vs-sse-vs-polling"
+    ]
+  },
+  {
+    "id": "github-actions",
+    "term": "GitHub Actions",
+    "definition": "A CI/CD automation platform enabling custom workflow pipelines directly within GitHub repositories to run tests, linters, and deployments.",
+    "concepts": [
+      "docker-ci-cd"
     ]
   },
   {
@@ -683,6 +1061,22 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "graceful-shutdown",
+    "term": "Graceful Shutdown",
+    "definition": "Intercepting termination signals (SIGTERM) to stop accepting new requests, finish inflight connections, and close database sockets cleanly.",
+    "concepts": [
+      "zero-downtime-deploy-migrations"
+    ]
+  },
+  {
+    "id": "graphql",
+    "term": "GraphQL",
+    "definition": "An API query language and runtime enabling clients to request exactly the data fields they need in a single round-trip HTTP request.",
+    "concepts": [
+      "graphql-vs-rest-vs-grpc"
+    ]
+  },
+  {
     "id": "group",
     "term": "$group Stage",
     "definition": "MongoDB aggregation pipeline stage that separates documents into groups according to a specified identifier expression.",
@@ -691,11 +1085,27 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "grpc",
+    "term": "gRPC",
+    "definition": "A high-performance, open-source universal RPC framework developed by Google running over HTTP/2 with binary Protocol Buffers.",
+    "concepts": [
+      "graphql-vs-rest-vs-grpc"
+    ]
+  },
+  {
     "id": "handshake",
     "term": "Handshake",
     "definition": "An automated negotiation sequence (such as TCP SYN-ACK or TLS negotiation) establishing connection parameters before data transfer.",
     "concepts": [
       "dns-tcp-http-journey"
+    ]
+  },
+  {
+    "id": "handshake-overhead",
+    "term": "Handshake Overhead",
+    "definition": "The cumulative latency and CPU cost of TCP 3-way handshakes, TLS negotiations, and database authentication for every new connection.",
+    "concepts": [
+      "connection-pooling"
     ]
   },
   {
@@ -715,6 +1125,22 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "health-check",
+    "term": "Health Check Probe",
+    "definition": "Periodic HTTP or TCP probes sent by load balancers to detect unhealthy service instances and temporarily remove them from traffic rotation.",
+    "concepts": [
+      "horizontal-scaling-load-balancing"
+    ]
+  },
+  {
+    "id": "heartbeat",
+    "term": "WebSocket Heartbeat (Ping/Pong)",
+    "definition": "Periodic lightweight frames exchanged between client and server to verify socket liveness and prevent firewall timeout closures.",
+    "concepts": [
+      "websockets-vs-sse-vs-polling"
+    ]
+  },
+  {
     "id": "helmet",
     "term": "Helmet.js",
     "definition": "Popular Express middleware package that secures applications by automatically configuring essential defensive HTTP response headers.",
@@ -731,6 +1157,30 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "highwatermark",
+    "term": "highWaterMark",
+    "definition": "The buffer threshold (default 16KB for objects, 64KB for byte streams) at which stream.write() begins returning false to halt producers.",
+    "concepts": [
+      "backpressure"
+    ]
+  },
+  {
+    "id": "horizontal-partitioning",
+    "term": "Horizontal Partitioning",
+    "definition": "Splitting rows or documents of a single logical table across multiple physical database nodes based on a partition key.",
+    "concepts": [
+      "sharding"
+    ]
+  },
+  {
+    "id": "horizontal-scaling",
+    "term": "Horizontal Scaling (Scale Out)",
+    "definition": "Adding more machine nodes running application instances behind a load balancer rather than upgrading CPU/RAM on a single server.",
+    "concepts": [
+      "horizontal-scaling-load-balancing"
+    ]
+  },
+  {
     "id": "hsts",
     "term": "HTTP Strict Transport Security (HSTS)",
     "definition": "A security header instructing browsers to interact with the domain exclusively over encrypted HTTPS connections.",
@@ -743,9 +1193,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "HTTP",
     "definition": "HyperText Transfer Protocol — the standard protocol for sending requests and responses between client and server across the web.",
     "concepts": [
-      "http-request-anatomy",
       "client-server-model",
-      "dns-tcp-http-journey"
+      "dns-tcp-http-journey",
+      "http-request-anatomy"
     ]
   },
   {
@@ -773,11 +1223,35 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "http2-transport",
+    "term": "HTTP/2 Transport",
+    "definition": "A major revision of the HTTP protocol supporting binary framing, header compression (HPACK), and bi-directional stream multiplexing.",
+    "concepts": [
+      "graphql-vs-rest-vs-grpc"
+    ]
+  },
+  {
+    "id": "id-token",
+    "term": "OpenID Connect ID Token",
+    "definition": "A signed JWT issued by an identity provider containing cryptographically verified user identity profile claims.",
+    "concepts": [
+      "oauth2-sso-flows"
+    ]
+  },
+  {
     "id": "idempotency",
     "term": "Idempotency",
     "definition": "Property of an operation where making identical requests multiple times produces the exact same server state as a single request.",
     "concepts": [
       "idempotency-safe-methods"
+    ]
+  },
+  {
+    "id": "idempotency-key",
+    "term": "Idempotency Key",
+    "definition": "A unique client-generated UUID sent in headers (e.g., Idempotency-Key) allowing servers to safely deduplicate duplicate payment or write requests.",
+    "concepts": [
+      "idempotency-keys"
     ]
   },
   {
@@ -794,6 +1268,14 @@ export const glossary: GlossaryTerm[] = [
     "definition": "ESM keyword used to statically or dynamically bring in exported bindings, components, or functions from other modules.",
     "concepts": [
       "modules-cjs-vs-esm"
+    ]
+  },
+  {
+    "id": "in-memory-datastore",
+    "term": "In-Memory Datastore",
+    "definition": "A database system like Redis that stores primary datasets in RAM rather than disk, enabling sub-millisecond read and write latencies.",
+    "concepts": [
+      "redis-caching"
     ]
   },
   {
@@ -829,12 +1311,44 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "ipc",
+    "term": "IPC (Inter-Process Communication)",
+    "definition": "The OS-level message channel used by Node's parent and child processes to exchange serializable JSON payloads and socket file descriptors.",
+    "concepts": [
+      "worker-threads-child-process"
+    ]
+  },
+  {
     "id": "ixscan",
     "term": "IXSCAN",
     "definition": "Index Scan — MongoDB walks a B-Tree index to find matching document pointers. O(log n) — dramatically faster than COLLSCAN.",
     "concepts": [
       "compound-index-esr-rule",
       "indexing-collscan-ixscan"
+    ]
+  },
+  {
+    "id": "jaeger",
+    "term": "Jaeger Tracing",
+    "definition": "An open-source, end-to-end distributed tracing backend used for monitoring and troubleshooting transactions in complex microservices.",
+    "concepts": [
+      "observability-tracing"
+    ]
+  },
+  {
+    "id": "job-worker",
+    "term": "Job Worker",
+    "definition": "An isolated background process that continuously polls or listens to a message queue, executes tasks, and reports completion status.",
+    "concepts": [
+      "message-queues-jobs"
+    ]
+  },
+  {
+    "id": "journaling",
+    "term": "Journaling (WiredTiger)",
+    "definition": "An on-disk write-ahead log ensuring database crash recovery and durability between periodic full checkpoints.",
+    "concepts": [
+      "replica-sets-read-write-concern"
     ]
   },
   {
@@ -850,8 +1364,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "JWT",
     "definition": "JSON Web Token — a compact, self-contained string for transmitting claims between parties, split into header.payload.signature.",
     "concepts": [
-      "sessions-vs-jwt",
-      "jwt-anatomy"
+      "jwt-anatomy",
+      "sessions-vs-jwt"
     ]
   },
   {
@@ -923,9 +1437,25 @@ export const glossary: GlossaryTerm[] = [
     "term": "libuv",
     "definition": "A multi-platform C library providing asynchronous I/O abstractions, non-blocking network polling, and a background worker thread pool.",
     "concepts": [
-      "what-is-nodejs",
+      "event-loop-deep-dive",
       "event-loop-intro",
-      "event-loop-deep-dive"
+      "what-is-nodejs"
+    ]
+  },
+  {
+    "id": "libuv-threadpool",
+    "term": "libuv Thread Pool",
+    "definition": "A background pool of worker threads (default 4, configured via UV_THREADPOOL_SIZE) used by Node for filesystem I/O, DNS lookup, and crypto tasks.",
+    "concepts": [
+      "blocking-the-loop"
+    ]
+  },
+  {
+    "id": "load-balancing",
+    "term": "Load Balancing",
+    "definition": "Distributing incoming client network traffic across multiple backend application servers to ensure reliability and throughput.",
+    "concepts": [
+      "horizontal-scaling-load-balancing"
     ]
   },
   {
@@ -965,9 +1495,17 @@ export const glossary: GlossaryTerm[] = [
     "term": "Macrotask Queue",
     "definition": "Queue holding scheduled timer callbacks, setImmediate jobs, and external I/O events scheduled for subsequent loop cycles.",
     "concepts": [
-      "event-loop-intro",
       "callbacks-promises-async",
-      "event-loop-deep-dive"
+      "event-loop-deep-dive",
+      "event-loop-intro"
+    ]
+  },
+  {
+    "id": "mass-assignment",
+    "term": "Mass Assignment Vulnerability",
+    "definition": "A flaw where user request payloads bind directly to internal model fields without filtering, allowing attackers to overwrite isAdmin or role.",
+    "concepts": [
+      "owasp-api-top-10"
     ]
   },
   {
@@ -976,6 +1514,38 @@ export const glossary: GlossaryTerm[] = [
     "definition": "MongoDB aggregation pipeline stage that filters documents to pass only those matching specified query conditions.",
     "concepts": [
       "aggregation-pipeline"
+    ]
+  },
+  {
+    "id": "max-pool-size",
+    "term": "maxPoolSize",
+    "definition": "The upper limit on concurrent socket connections maintained by a database driver connection pool (default 100 in Mongoose).",
+    "concepts": [
+      "connection-pooling"
+    ]
+  },
+  {
+    "id": "message-broker",
+    "term": "Message Broker",
+    "definition": "An intermediary software agent (Redis, RabbitMQ, Kafka) that translates, routes, and guarantees delivery of messages between services.",
+    "concepts": [
+      "pubsub-and-fanout"
+    ]
+  },
+  {
+    "id": "message-channel",
+    "term": "MessageChannel",
+    "definition": "An asynchronous two-way communication pipe consisting of two interconnected ports for exchanging messages between worker threads.",
+    "concepts": [
+      "worker-threads-child-process"
+    ]
+  },
+  {
+    "id": "message-queue",
+    "term": "Message Queue",
+    "definition": "An asynchronous buffer that decouples task producers from workers, enabling durable background processing and traffic leveling.",
+    "concepts": [
+      "message-queues-jobs"
     ]
   },
   {
@@ -989,13 +1559,22 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "microservices",
+    "term": "Microservices Architecture",
+    "definition": "An architectural style structuring an application as a collection of independently deployable, loosely coupled, domain-scoped services.",
+    "concepts": [
+      "microservices-vs-monolith"
+    ]
+  },
+  {
     "id": "microtask-queue",
     "term": "Microtask Queue",
     "definition": "High-priority queue containing Promise callbacks and queueMicrotask; completely drained after every stack frame or event phase.",
     "concepts": [
-      "event-loop-intro",
       "callbacks-promises-async",
-      "event-loop-deep-dive"
+      "event-loop-deep-dive",
+      "event-loop-intro",
+      "event-loop-phases-deep-dive"
     ]
   },
   {
@@ -1003,8 +1582,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Middleware",
     "definition": "Functions with access to req, res, and next that execute in a sequential pipeline to process, validate, or transform requests.",
     "concepts": [
-      "middleware-pipeline",
-      "body-parsing-json"
+      "body-parsing-json",
+      "middleware-pipeline"
     ]
   },
   {
@@ -1028,9 +1607,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "Model",
     "definition": "A compiled Mongoose constructor class based on a Schema providing an interface to query, create, update, and delete collection documents.",
     "concepts": [
-      "mongoose-schema-model",
+      "controller-vs-service-vs-model",
       "layered-architecture",
-      "controller-vs-service-vs-model"
+      "mongoose-schema-model"
     ]
   },
   {
@@ -1054,8 +1633,24 @@ export const glossary: GlossaryTerm[] = [
     "term": "Mongoose",
     "definition": "An Object Data Modeling (ODM) library for MongoDB and Node.js providing strict schema validation, models, and middleware hooks.",
     "concepts": [
-      "mongoose-schema-model",
-      "mongoose-schema-deep-dive"
+      "mongoose-schema-deep-dive",
+      "mongoose-schema-model"
+    ]
+  },
+  {
+    "id": "mongos",
+    "term": "mongos Query Router",
+    "definition": "A lightweight routing proxy that accepts client queries, consults config servers, and directs requests to the appropriate shard(s).",
+    "concepts": [
+      "sharding"
+    ]
+  },
+  {
+    "id": "monolith",
+    "term": "Monolithic Architecture",
+    "definition": "An application design where all business features, API endpoints, and database interactions are bundled and deployed as a single codebase.",
+    "concepts": [
+      "microservices-vs-monolith"
     ]
   },
   {
@@ -1064,6 +1659,14 @@ export const glossary: GlossaryTerm[] = [
     "definition": "Node.js middleware for handling multipart/form-data requests, primarily used for parsing and streaming file uploads.",
     "concepts": [
       "file-uploads"
+    ]
+  },
+  {
+    "id": "multi-stage-build",
+    "term": "Multi-Stage Docker Build",
+    "definition": "A Dockerfile technique using multiple FROM statements to compile assets in a heavy build container and copy only artifacts into a slim runtime image.",
+    "concepts": [
+      "docker-ci-cd"
     ]
   },
   {
@@ -1083,12 +1686,28 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "network-partition",
+    "term": "Network Partition",
+    "definition": "A communication breakdown between distributed nodes where servers remain operational but cannot exchange network packets.",
+    "concepts": [
+      "cap-theorem-acid-vs-base"
+    ]
+  },
+  {
     "id": "next",
     "term": "next()",
     "definition": "The continuation callback passed to Express middleware that passes execution control to the next handler in the stack.",
     "concepts": [
-      "middleware-pipeline",
-      "error-handling-101"
+      "error-handling-101",
+      "middleware-pipeline"
+    ]
+  },
+  {
+    "id": "nginx",
+    "term": "NGINX Reverse Proxy",
+    "definition": "A high-performance asynchronous HTTP and reverse proxy server often used as an edge load balancer and SSL termination gateway.",
+    "concepts": [
+      "horizontal-scaling-load-balancing"
     ]
   },
   {
@@ -1124,12 +1743,28 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "oauth2",
+    "term": "OAuth 2.0 Framework",
+    "definition": "An industry-standard authorization protocol enabling third-party applications to obtain scoped access to user resources without passwords.",
+    "concepts": [
+      "oauth2-sso-flows"
+    ]
+  },
+  {
     "id": "objectid",
     "term": "ObjectId",
     "definition": "A 12-byte BSON identifier used as the default unique primary key (`_id`) for every document created in MongoDB.",
     "concepts": [
       "mongodb-basics",
       "mongoose-schema-model"
+    ]
+  },
+  {
+    "id": "observability",
+    "term": "Observability",
+    "definition": "The ability to infer the internal states and performance of a complex backend system based on its external outputs: logs, metrics, and traces.",
+    "concepts": [
+      "observability-tracing"
     ]
   },
   {
@@ -1149,12 +1784,36 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "opentelemetry",
+    "term": "OpenTelemetry (OTel)",
+    "definition": "A vendor-neutral open standard and SDK ecosystem for generating, capturing, and exporting telemetry data (traces, metrics, logs).",
+    "concepts": [
+      "observability-tracing"
+    ]
+  },
+  {
     "id": "operational-error",
     "term": "Operational Error",
     "definition": "A predictable runtime exception arising from external factors (invalid input, lost database connection) that applications handle gracefully.",
     "concepts": [
       "centralized-error-handling",
       "operational-vs-programmer-errors"
+    ]
+  },
+  {
+    "id": "oplog",
+    "term": "Oplog (Operations Log)",
+    "definition": "A special capped collection in MongoDB's local database that records a rolling history of all data modifications for replication.",
+    "concepts": [
+      "replica-sets-read-write-concern"
+    ]
+  },
+  {
+    "id": "opossum",
+    "term": "Opossum",
+    "definition": "A popular Node.js circuit breaker library that monitors asynchronous functions and wraps them in stateful Closed, Open, and Half-Open states.",
+    "concepts": [
+      "api-gateway-retries-circuit-breaker"
     ]
   },
   {
@@ -1171,6 +1830,22 @@ export const glossary: GlossaryTerm[] = [
     "definition": "The combination of protocol scheme, domain hostname, and port number identifying the origin location of a web request.",
     "concepts": [
       "cors-preflight"
+    ]
+  },
+  {
+    "id": "over-fetching",
+    "term": "Over-Fetching",
+    "definition": "A common REST limitation where endpoints return entire heavy resource payloads containing many more fields than the client UI requires.",
+    "concepts": [
+      "graphql-vs-rest-vs-grpc"
+    ]
+  },
+  {
+    "id": "owasp-api",
+    "term": "OWASP API Security Top 10",
+    "definition": "A regularly updated awareness document identifying the most critical security vulnerabilities affecting modern web APIs.",
+    "concepts": [
+      "owasp-api-top-10"
     ]
   },
   {
@@ -1198,6 +1873,14 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "pending-phase",
+    "term": "Pending Phase",
+    "definition": "The event loop phase that runs deferred I/O callbacks from previous ticks, such as TCP socket ECONNREFUSED system errors.",
+    "concepts": [
+      "event-loop-phases-deep-dive"
+    ]
+  },
+  {
     "id": "pino",
     "term": "Pino",
     "definition": "An extremely fast, low-overhead JSON logger for Node.js designed to stream structured events to standard output.",
@@ -1206,11 +1889,36 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "pipe",
+    "term": "Stream.pipe() / pipeline()",
+    "definition": "A mechanism that connects a readable stream to a writable stream while automatically managing flow control, backpressure, and error cleanup.",
+    "concepts": [
+      "streams-and-buffers"
+    ]
+  },
+  {
     "id": "pipeline",
     "term": "Pipeline",
     "definition": "An ordered sequence of middleware handlers processing a request step-by-step from arrival through response generation.",
     "concepts": [
-      "middleware-pipeline"
+      "middleware-pipeline",
+      "streams-and-buffers"
+    ]
+  },
+  {
+    "id": "pkce",
+    "term": "PKCE (Proof Key for Code Exchange)",
+    "definition": "A security extension for OAuth 2.0 public clients that prevents authorization code interception attacks using dynamic verifiers and challenges.",
+    "concepts": [
+      "oauth2-sso-flows"
+    ]
+  },
+  {
+    "id": "pm2",
+    "term": "PM2",
+    "definition": "A production process manager for Node.js providing built-in clustering, automatic zero-downtime reloads, memory limits, and log management.",
+    "concepts": [
+      "clustering-and-pm2"
     ]
   },
   {
@@ -1218,8 +1926,17 @@ export const glossary: GlossaryTerm[] = [
     "term": "Poll Phase",
     "definition": "Central event loop phase where Node.js retrieves new I/O events, executes blocking I/O callbacks, and pauses if idle.",
     "concepts": [
+      "event-loop-deep-dive",
       "event-loop-intro",
-      "event-loop-deep-dive"
+      "event-loop-phases-deep-dive"
+    ]
+  },
+  {
+    "id": "polling",
+    "term": "Short / Long Polling",
+    "definition": "A real-time simulation technique where clients repeatedly send HTTP requests to check if new server-side data has arrived.",
+    "concepts": [
+      "websockets-vs-sse-vs-polling"
     ]
   },
   {
@@ -1227,8 +1944,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "populate()",
     "definition": "Mongoose method that automatically replaces referenced ObjectIds in a document with the actual populated documents from other collections.",
     "concepts": [
-      "mongoose-schema-model",
       "embedding-vs-referencing",
+      "mongoose-schema-model",
       "populate-vs-lookup"
     ]
   },
@@ -1267,6 +1984,14 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "privilege-escalation",
+    "term": "Privilege Escalation",
+    "definition": "An unauthorized elevation of access rights enabling a standard user to execute administrator commands or access restricted tenant data.",
+    "concepts": [
+      "owasp-api-top-10"
+    ]
+  },
+  {
     "id": "process-env",
     "term": "process.env",
     "definition": "A global object provided by Node.js exposing the user environment variables active for the current running process.",
@@ -1280,6 +2005,22 @@ export const glossary: GlossaryTerm[] = [
     "definition": "Node.js core function that terminates the running process immediately with a designated numeric exit status code.",
     "concepts": [
       "operational-vs-programmer-errors"
+    ]
+  },
+  {
+    "id": "process-manager",
+    "term": "Process Manager",
+    "definition": "A system service or daemon (systemd, PM2) that supervises application processes, monitors health, and restarts crashed instances automatically.",
+    "concepts": [
+      "clustering-and-pm2"
+    ]
+  },
+  {
+    "id": "process-nexttick",
+    "term": "process.nextTick()",
+    "definition": "A Node.js queue that runs synchronously immediately after the current operation finishes and before the event loop advances to any phase.",
+    "concepts": [
+      "event-loop-phases-deep-dive"
     ]
   },
   {
@@ -1319,8 +2060,16 @@ export const glossary: GlossaryTerm[] = [
     "term": "Unhandled Rejection",
     "definition": "An event triggered when a Promise is rejected without an attached .catch() handler or enclosing try/catch block.",
     "concepts": [
-      "error-handling-101",
-      "async-error-wrapper"
+      "async-error-wrapper",
+      "error-handling-101"
+    ]
+  },
+  {
+    "id": "protobuf",
+    "term": "Protocol Buffers (Protobuf)",
+    "definition": "A language-neutral, platform-neutral binary serialization mechanism that is significantly smaller and faster to serialize than JSON.",
+    "concepts": [
+      "graphql-vs-rest-vs-grpc"
     ]
   },
   {
@@ -1329,6 +2078,14 @@ export const glossary: GlossaryTerm[] = [
     "definition": "A standardized system of rules and message formats enabling computers to communicate accurately across networks.",
     "concepts": [
       "client-server-model"
+    ]
+  },
+  {
+    "id": "pubsub",
+    "term": "Publish-Subscribe (Pub/Sub)",
+    "definition": "A messaging pattern where message publishers do not send directly to specific receivers, but broadcast to channels with subscribed listeners.",
+    "concepts": [
+      "pubsub-and-fanout"
     ]
   },
   {
@@ -1345,6 +2102,14 @@ export const glossary: GlossaryTerm[] = [
     "definition": "Key-value pairs appended after `?` in a URL used for optional parameters such as searching, filtering, and pagination.",
     "concepts": [
       "http-request-anatomy"
+    ]
+  },
+  {
+    "id": "quorum",
+    "term": "Quorum",
+    "definition": "The minimum number of voting nodes in a distributed cluster required to agree before a state change or leader election can be committed.",
+    "concepts": [
+      "cap-theorem-acid-vs-base"
     ]
   },
   {
@@ -1372,6 +2137,30 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "read-preference",
+    "term": "Read Preference (MongoDB)",
+    "definition": "A MongoDB client setting (primary, secondaryPreferred, nearest) governing which replica set nodes queries are routed to.",
+    "concepts": [
+      "replica-sets-read-write-concern"
+    ]
+  },
+  {
+    "id": "readable-stream",
+    "term": "Readable Stream",
+    "definition": "An abstraction for a source of data from which sequential chunks can be consumed (e.g., fs.createReadStream or req).",
+    "concepts": [
+      "streams-and-buffers"
+    ]
+  },
+  {
+    "id": "readiness-probe",
+    "term": "Readiness Probe",
+    "definition": "A health check endpoint queried by Kubernetes or load balancers to determine if a newly deployed container is ready to accept user traffic.",
+    "concepts": [
+      "zero-downtime-deploy-migrations"
+    ]
+  },
+  {
     "id": "redirect",
     "term": "Redirect",
     "definition": "The process where a server responds with a 3xx code and Location header telling the client to repeat the request at another URL.",
@@ -1384,7 +2173,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Redis",
     "definition": "In-memory key-value store commonly used as a cache, message broker, and session store in Node.js applications.",
     "concepts": [
-      "cache-aside-pattern"
+      "cache-aside-pattern",
+      "redis-caching"
     ]
   },
   {
@@ -1396,11 +2186,35 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "redis-pubsub",
+    "term": "Redis Pub/Sub",
+    "definition": "An ephemeral publish-subscribe system built into Redis using SUBSCRIBE and PUBLISH commands without message persistence.",
+    "concepts": [
+      "pubsub-and-fanout"
+    ]
+  },
+  {
+    "id": "redis-queue",
+    "term": "Redis Queue",
+    "definition": "A queue implementation using Redis data structures (Streams or Lists) with atomic operations like RPOPLPUSH / BRPOPLPUSH for durability.",
+    "concepts": [
+      "message-queues-jobs"
+    ]
+  },
+  {
     "id": "redis-store",
     "term": "Redis Session Store",
     "definition": "An in-memory storage adapter persisting user session records in Redis rather than inside single-server Node.js process memory.",
     "concepts": [
       "sessions-vs-jwt"
+    ]
+  },
+  {
+    "id": "redos",
+    "term": "ReDoS (RegEx Denial of Service)",
+    "definition": "An algorithmic denial of service caused by poorly constructed regular expressions suffering from catastrophic polynomial or exponential backtracking.",
+    "concepts": [
+      "blocking-the-loop"
     ]
   },
   {
@@ -1428,11 +2242,28 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "replay-attack",
+    "term": "Replay Attack (Duplicate Request)",
+    "definition": "The intentional or accidental re-transmission of a valid network request causing unwanted duplicate side effects like double charges.",
+    "concepts": [
+      "idempotency-keys"
+    ]
+  },
+  {
     "id": "replica-set",
     "term": "MongoDB Replica Set",
     "definition": "A cluster of MongoDB instances hosting the same dataset, providing high availability, redundancy, and transaction oplog support.",
     "concepts": [
+      "replica-sets-read-write-concern",
       "transactions-and-sessions"
+    ]
+  },
+  {
+    "id": "replication-lag",
+    "term": "Replication Lag",
+    "definition": "The delay between when a write is committed to the primary MongoDB member and when it is replicated and applied by secondary nodes.",
+    "concepts": [
+      "replica-sets-read-write-concern"
     ]
   },
   {
@@ -1481,7 +2312,16 @@ export const glossary: GlossaryTerm[] = [
     "term": "REST",
     "definition": "Representational State Transfer — an architectural style for networked hypermedia systems emphasizing statelessness and standard HTTP.",
     "concepts": [
+      "graphql-vs-rest-vs-grpc",
       "rest-principles"
+    ]
+  },
+  {
+    "id": "retry-pattern",
+    "term": "Retry Pattern with Jitter",
+    "definition": "Automatically re-attempting failed network operations with randomized delays to avoid synchronizing concurrent retries into traffic spikes.",
+    "concepts": [
+      "api-gateway-retries-circuit-breaker"
     ]
   },
   {
@@ -1509,13 +2349,29 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "rolling-update",
+    "term": "Rolling Update Deployment",
+    "definition": "A deployment strategy that gradually replaces old application container instances with new versions one by one to prevent downtime.",
+    "concepts": [
+      "zero-downtime-deploy-migrations"
+    ]
+  },
+  {
+    "id": "round-robin",
+    "term": "Round-Robin Load Balancing",
+    "definition": "A distribution algorithm that assigns each new incoming network connection sequentially to the next available worker process in the pool.",
+    "concepts": [
+      "clustering-and-pm2"
+    ]
+  },
+  {
     "id": "route-handler",
     "term": "Route Handler",
     "definition": "The final middleware function attached to a route path responsible for generating and sending the HTTP response.",
     "concepts": [
+      "layered-architecture",
       "middleware-pipeline",
-      "routing",
-      "layered-architecture"
+      "routing"
     ]
   },
   {
@@ -1560,6 +2416,14 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "saga-pattern",
+    "term": "Saga Pattern",
+    "definition": "A sequence of local transactions across microservices where each transaction updates data and publishes events triggering compensating rollbacks on failure.",
+    "concepts": [
+      "microservices-vs-monolith"
+    ]
+  },
+  {
     "id": "salting",
     "term": "Password Salting",
     "definition": "Appending a unique cryptographically random string to passwords before hashing to ensure identical passwords generate unique hashes.",
@@ -1593,13 +2457,21 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "scatter-gather",
+    "term": "Scatter-Gather Query",
+    "definition": "An inefficient query pattern that lacks the shard key, forcing the router to broadcast the query to every shard and merge responses.",
+    "concepts": [
+      "sharding"
+    ]
+  },
+  {
     "id": "schema",
     "term": "Schema",
     "definition": "A Mongoose configuration object mapping out document fields, types, default values, validators, and custom instance methods.",
     "concepts": [
-      "mongoose-schema-model",
       "controller-vs-service-vs-model",
-      "mongoose-schema-deep-dive"
+      "mongoose-schema-deep-dive",
+      "mongoose-schema-model"
     ]
   },
   {
@@ -1671,8 +2543,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "Service Layer",
     "definition": "The architectural layer encapsulating business logic, workflows, external API integrations, and transaction orchestration.",
     "concepts": [
-      "layered-architecture",
-      "controller-vs-service-vs-model"
+      "controller-vs-service-vs-model",
+      "layered-architecture"
     ]
   },
   {
@@ -1693,6 +2565,46 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "setnx",
+    "term": "SETNX (SET if Not eXists)",
+    "definition": "An atomic Redis command used to acquire mutual exclusion locks by setting a key only if it does not already exist.",
+    "concepts": [
+      "idempotency-keys"
+    ]
+  },
+  {
+    "id": "shard-key",
+    "term": "Shard Key",
+    "definition": "The immutable indexed field (or compound fields) chosen to partition collection documents across multiple shards.",
+    "concepts": [
+      "sharding"
+    ]
+  },
+  {
+    "id": "sharding",
+    "term": "MongoDB Sharding",
+    "definition": "A horizontal scaling architecture that distributes subsets of a collection across multiple independent database servers (shards).",
+    "concepts": [
+      "sharding"
+    ]
+  },
+  {
+    "id": "shared-array-buffer",
+    "term": "SharedArrayBuffer",
+    "definition": "A low-level binary memory buffer shared concurrently between the main thread and worker threads without serialization overhead.",
+    "concepts": [
+      "worker-threads-child-process"
+    ]
+  },
+  {
+    "id": "sigterm",
+    "term": "SIGTERM Signal",
+    "definition": "A generic Unix termination signal sent by process managers or Kubernetes to request an application shut itself down cleanly within a grace period.",
+    "concepts": [
+      "zero-downtime-deploy-migrations"
+    ]
+  },
+  {
     "id": "sliding-window",
     "term": "Sliding Window Rate Limiting",
     "definition": "An algorithm calculating client request frequency over a moving rolling time window to eliminate boundary burst vulnerabilities.",
@@ -1701,12 +2613,28 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "so-reuseport",
+    "term": "SO_REUSEPORT",
+    "definition": "A socket option allowing multiple independent server processes on the same machine to bind to the exact same IP and port.",
+    "concepts": [
+      "clustering-and-pm2"
+    ]
+  },
+  {
     "id": "soc",
     "term": "Separation of Concerns (SoC)",
     "definition": "A software design principle separating computer programs into distinct sections where each section addresses a separate concern.",
     "concepts": [
-      "layered-architecture",
-      "controller-vs-service-vs-model"
+      "controller-vs-service-vs-model",
+      "layered-architecture"
+    ]
+  },
+  {
+    "id": "socket-exhaustion",
+    "term": "Socket Exhaustion",
+    "definition": "A bottleneck where all available pooled DB connections are checked out, forcing subsequent queries to queue until existing queries finish.",
+    "concepts": [
+      "connection-pooling"
     ]
   },
   {
@@ -1726,12 +2654,36 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "sse",
+    "term": "Server-Sent Events (SSE)",
+    "definition": "A unidirectional protocol where the server streams real-time UTF-8 text events to the browser over a single persistent HTTP connection.",
+    "concepts": [
+      "websockets-vs-sse-vs-polling"
+    ]
+  },
+  {
+    "id": "sso",
+    "term": "Single Sign-On (SSO)",
+    "definition": "An authentication scheme allowing a user to log in once with an identity provider (Google, GitHub) to access multiple independent services.",
+    "concepts": [
+      "oauth2-sso-flows"
+    ]
+  },
+  {
+    "id": "ssrf",
+    "term": "SSRF (Server-Side Request Forgery)",
+    "definition": "A vulnerability where an attacker manipulates the backend server into sending unauthorized HTTP requests to internal network services or cloud metadata.",
+    "concepts": [
+      "owasp-api-top-10"
+    ]
+  },
+  {
     "id": "stack-trace",
     "term": "Stack Trace",
     "definition": "A sequential report of active execution frames showing the file names, functions, and line numbers leading up to an error.",
     "concepts": [
-      "error-handling-101",
-      "centralized-error-handling"
+      "centralized-error-handling",
+      "error-handling-101"
     ]
   },
   {
@@ -1739,7 +2691,16 @@ export const glossary: GlossaryTerm[] = [
     "term": "Stale Data",
     "definition": "Cached data that no longer matches the source of truth (the database). Managed via TTL or explicit cache invalidation.",
     "concepts": [
-      "cache-aside-pattern"
+      "cache-aside-pattern",
+      "cache-invalidation-strategies"
+    ]
+  },
+  {
+    "id": "starvation",
+    "term": "Event Loop Starvation",
+    "definition": "A failure condition where recursive microtasks or nextTick calls monopolize the CPU, preventing the event loop from ever reaching I/O or timer phases.",
+    "concepts": [
+      "event-loop-phases-deep-dive"
     ]
   },
   {
@@ -1755,6 +2716,7 @@ export const glossary: GlossaryTerm[] = [
     "term": "Stateless",
     "definition": "Core architectural constraint where the server stores no client session context; each request carries complete auth and state.",
     "concepts": [
+      "horizontal-scaling-load-balancing",
       "rest-principles",
       "sessions-vs-jwt"
     ]
@@ -1785,6 +2747,23 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "streams",
+    "term": "Node.js Streams",
+    "definition": "An abstraction for handling streaming data chunk by chunk over time without buffering the entire payload into RAM all at once.",
+    "concepts": [
+      "backpressure",
+      "streams-and-buffers"
+    ]
+  },
+  {
+    "id": "stripe-pattern",
+    "term": "Stripe Idempotency Pattern",
+    "definition": "Caching the initial request result keyed by client UUID; subsequent identical requests return the cached response without re-executing logic.",
+    "concepts": [
+      "idempotency-keys"
+    ]
+  },
+  {
     "id": "structured-logging",
     "term": "Structured Logging",
     "definition": "Emitting application logs as standardized JSON objects rather than unstructured plain text for automated parsing and alerting.",
@@ -1810,6 +2789,14 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "tcp-socket",
+    "term": "TCP Socket",
+    "definition": "An endpoint for two-way network communication over TCP, identified by a local IP, local port, remote IP, and remote port.",
+    "concepts": [
+      "connection-pooling"
+    ]
+  },
+  {
     "id": "test-pyramid",
     "term": "Test Pyramid",
     "definition": "A testing strategy recommending a wide base of fast unit tests, a middle layer of integration tests, and few high-level E2E tests.",
@@ -1818,11 +2805,20 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "text-event-stream",
+    "term": "text/event-stream",
+    "definition": "The MIME content-type used by Server-Sent Events to establish an unbuffered streaming connection with client EventSource APIs.",
+    "concepts": [
+      "websockets-vs-sse-vs-polling"
+    ]
+  },
+  {
     "id": "thread-pool",
     "term": "Thread Pool",
     "definition": "A managed collection of background worker threads in libuv used to execute blocking operations like file I/O, DNS, and crypto.",
     "concepts": [
-      "what-is-nodejs"
+      "what-is-nodejs",
+      "worker-threads-child-process"
     ]
   },
   {
@@ -1830,8 +2826,9 @@ export const glossary: GlossaryTerm[] = [
     "term": "Timers Phase",
     "definition": "The initial phase of the Node.js event loop executing callbacks scheduled by setTimeout and setInterval whose thresholds passed.",
     "concepts": [
+      "event-loop-deep-dive",
       "event-loop-intro",
-      "event-loop-deep-dive"
+      "event-loop-phases-deep-dive"
     ]
   },
   {
@@ -1875,6 +2872,14 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "transform-stream",
+    "term": "Transform Stream",
+    "definition": "A duplex stream where the output is calculated by modifying, compressing, or transforming the incoming input chunks (e.g., zlib.createGzip).",
+    "concepts": [
+      "streams-and-buffers"
+    ]
+  },
+  {
     "id": "tree-shaking",
     "term": "Tree-Shaking",
     "definition": "Static analysis optimization performed by bundlers that strips out unused code and unreferenced exports from final bundles.",
@@ -1895,7 +2900,8 @@ export const glossary: GlossaryTerm[] = [
     "term": "TTL",
     "definition": "Time To Live — how long a cached value stays valid before expiring. Prevents stale data from being served.",
     "concepts": [
-      "cache-aside-pattern"
+      "cache-aside-pattern",
+      "redis-caching"
     ]
   },
   {
@@ -1920,6 +2926,14 @@ export const glossary: GlossaryTerm[] = [
     "definition": "A process-level Node.js event emitted when an unhandled JavaScript exception bubbles all the way back to the event loop.",
     "concepts": [
       "operational-vs-programmer-errors"
+    ]
+  },
+  {
+    "id": "under-fetching",
+    "term": "Under-Fetching (N+1 Calls)",
+    "definition": "A REST constraint where an endpoint does not provide sufficient related data, forcing the client to fire multiple successive requests.",
+    "concepts": [
+      "graphql-vs-rest-vs-grpc"
     ]
   },
   {
@@ -2011,6 +3025,38 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "w-majority",
+    "term": "w: 'majority'",
+    "definition": "A write concern requiring acknowledgment from a strict majority (>50%) of voting replica set members to guarantee durability against failovers.",
+    "concepts": [
+      "replica-sets-read-write-concern"
+    ]
+  },
+  {
+    "id": "wait-queue",
+    "term": "Connection Wait Queue",
+    "definition": "An in-memory queue that holds incoming query promises waiting for an available database socket when the connection pool is saturated.",
+    "concepts": [
+      "connection-pooling"
+    ]
+  },
+  {
+    "id": "waterfall",
+    "term": "Waterfall Latency Breakdown",
+    "definition": "A graphical timeline visualization showing spans representing the sequential and parallel time spent in each service or database query.",
+    "concepts": [
+      "observability-tracing"
+    ]
+  },
+  {
+    "id": "websockets",
+    "term": "WebSocket Protocol",
+    "definition": "A persistent, bi-directional, full-duplex TCP communication protocol initiated via an HTTP Upgrade handshake.",
+    "concepts": [
+      "websockets-vs-sse-vs-polling"
+    ]
+  },
+  {
     "id": "wildcard",
     "term": "Wildcard Route",
     "definition": "A catch-all route pattern (such as *) that matches any path, typically placed last to serve 404 responses or fallback pages.",
@@ -2027,11 +3073,60 @@ export const glossary: GlossaryTerm[] = [
     ]
   },
   {
+    "id": "worker-threads",
+    "term": "Worker Threads",
+    "definition": "A Node.js module (worker_threads) enabling true multi-threaded JavaScript execution within a single OS process sharing memory buffers.",
+    "concepts": [
+      "worker-threads-child-process"
+    ]
+  },
+  {
+    "id": "writable-stream",
+    "term": "Writable Stream",
+    "definition": "An abstraction for a destination to which sequential chunks of data can be written (e.g., fs.createWriteStream or res).",
+    "concepts": [
+      "streams-and-buffers"
+    ]
+  },
+  {
+    "id": "write-behind",
+    "term": "Write-Behind (Write-Back) Caching",
+    "definition": "A caching strategy where writes update the cache immediately and asynchronously write to the database in background batches.",
+    "concepts": [
+      "cache-invalidation-strategies"
+    ]
+  },
+  {
+    "id": "write-concern",
+    "term": "Write Concern (MongoDB)",
+    "definition": "A MongoDB configuration (w: 'majority', j: true) determining the number of replica set members that must commit a write before acknowledging.",
+    "concepts": [
+      "replica-sets-read-write-concern"
+    ]
+  },
+  {
+    "id": "write-through",
+    "term": "Write-Through Caching",
+    "definition": "A caching strategy where writes are applied synchronously to both the cache and the underlying database before returning success.",
+    "concepts": [
+      "cache-invalidation-strategies"
+    ]
+  },
+  {
     "id": "xss",
     "term": "Cross-Site Scripting (XSS)",
     "definition": "A vulnerability where an attacker injects malicious scripts into trusted websites, executing within victims' browsers.",
     "concepts": [
       "cookies-security-flags"
+    ]
+  },
+  {
+    "id": "zero-downtime",
+    "term": "Zero-Downtime Reload",
+    "definition": "A deployment strategy where new worker processes start and begin accepting traffic before older processes are gracefully stopped.",
+    "concepts": [
+      "clustering-and-pm2",
+      "zero-downtime-deploy-migrations"
     ]
   },
   {
@@ -2044,4 +3139,6 @@ export const glossary: GlossaryTerm[] = [
   }
 ]
 
-export const glossaryMap = Object.fromEntries(glossary.map(t => [t.id, t]))
+export const glossaryMap: Record<string, GlossaryTerm> = Object.fromEntries(
+  glossary.map((g) => [g.id, g])
+)
