@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect, useRef } from 'react'
 import type { VizProps } from '@/lib/registerViz'
 import { PlayControls } from '@/components/ui/PlayControls'
+import { useVizPlayback } from '@/hooks/useVizPlayback'
 
 const LANE_CONFIG = [
   { id: 'call-stack', label: 'Call Stack', color: '#818cf8' },
@@ -19,37 +19,18 @@ const TASKS_PER_STEP: Record<number, Record<string, string[]>> = {
   5: { 'call-stack': [], 'microtask-queue': [], 'macrotask-queue': [] },
 }
 
-export function QueueLanes({ steps, currentStep, onStep, onPlay, onReset }: VizProps) {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+export function QueueLanes({ steps, currentStep, onStep, onReset }: VizProps) {
+  const { isPlaying, handlePlay, handleReset } = useVizPlayback({
+    currentStep,
+    totalSteps: steps.length,
+    onStep,
+    onReset,
+    intervalMs: 1800,
+  })
   const step = steps[currentStep]
-  const activeLane = step.highlights?.[0] ?? ''
+  const activeLane = step?.highlights?.[0] ?? ''
 
   const tasks = TASKS_PER_STEP[currentStep] ?? TASKS_PER_STEP[0]
-
-  const handlePlay = () => {
-    if (isPlaying) {
-      clearInterval(timerRef.current!)
-      setIsPlaying(false)
-    } else {
-      setIsPlaying(true)
-      timerRef.current = setInterval(() => {
-        onStep(Math.min(currentStep + 1, steps.length - 1))
-        if (currentStep >= steps.length - 2) {
-          clearInterval(timerRef.current!)
-          setIsPlaying(false)
-        }
-      }, 2000)
-    }
-  }
-
-  const handleReset = () => {
-    clearInterval(timerRef.current!)
-    setIsPlaying(false)
-    onReset()
-  }
-
-  useEffect(() => () => clearInterval(timerRef.current!), [])
 
   return (
     <div className="space-y-4">

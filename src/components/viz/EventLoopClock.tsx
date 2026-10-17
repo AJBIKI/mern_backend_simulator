@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect, useRef } from 'react'
 import type { VizProps } from '@/lib/registerViz'
 import { PlayControls } from '@/components/ui/PlayControls'
+import { useVizPlayback } from '@/hooks/useVizPlayback'
 
 const PHASES = [
   { id: 'timers', label: 'Timers', angle: -90, color: '#fbbf24' },
@@ -20,35 +20,16 @@ function phasePosition(angleDeg: number, r: number) {
   }
 }
 
-export function EventLoopClock({ steps, currentStep, onStep, onPlay, onReset }: VizProps) {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+export function EventLoopClock({ steps, currentStep, onStep, onReset }: VizProps) {
+  const { isPlaying, handlePlay, handleReset } = useVizPlayback({
+    currentStep,
+    totalSteps: steps.length,
+    onStep,
+    onReset,
+    intervalMs: 1800,
+  })
   const step = steps[currentStep]
-  const activePhase = step.highlights?.[0] ?? ''
-
-  const handlePlay = () => {
-    if (isPlaying) {
-      clearInterval(timerRef.current!)
-      setIsPlaying(false)
-    } else {
-      setIsPlaying(true)
-      timerRef.current = setInterval(() => {
-        onStep(Math.min(currentStep + 1, steps.length - 1))
-        if (currentStep >= steps.length - 2) {
-          clearInterval(timerRef.current!)
-          setIsPlaying(false)
-        }
-      }, 2000)
-    }
-  }
-
-  const handleReset = () => {
-    clearInterval(timerRef.current!)
-    setIsPlaying(false)
-    onReset()
-  }
-
-  useEffect(() => () => clearInterval(timerRef.current!), [])
+  const activePhase = step?.highlights?.[0] ?? ''
 
   const cx = 160
   const cy = 160

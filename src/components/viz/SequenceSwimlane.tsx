@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import type { VizProps } from '@/lib/registerViz'
 import { PlayControls } from '@/components/ui/PlayControls'
-import { useState, useEffect, useRef } from 'react'
+import { useVizPlayback } from '@/hooks/useVizPlayback'
 
 const LANES = ['Client', 'Server', 'Database'] as const
 type Lane = typeof LANES[number]
@@ -25,17 +25,22 @@ function laneIndex(lane: Lane) {
   return LANES.indexOf(lane)
 }
 
-export function SequenceSwimlane({ steps, currentStep, onStep, onPlay, onReset }: VizProps) {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+export function SequenceSwimlane({ steps, currentStep, onStep, onReset }: VizProps) {
+  const { isPlaying, handlePlay, handleReset } = useVizPlayback({
+    currentStep,
+    totalSteps: steps.length,
+    onStep,
+    onReset,
+    intervalMs: 1800,
+  })
 
   const step = steps[currentStep]
-  const arrow = stepToArrow(step.highlights ?? [])
-  const activeLane = step.highlights?.[0]
+  const arrow = stepToArrow(step?.highlights ?? [])
+  const activeLane = step?.highlights?.[0]
 
   // Active lane from step highlights (client, server, database)
   const laneHighlight = (lane: Lane): boolean => {
-    const h = step.highlights?.[0] ?? ''
+    const h = step?.highlights?.[0] ?? ''
     if (h === 'client') return lane === 'Client'
     if (h === 'server') return lane === 'Server'
     if (h === 'database') return lane === 'Database'
@@ -45,30 +50,6 @@ export function SequenceSwimlane({ steps, currentStep, onStep, onPlay, onReset }
     if (h === 'db-to-server') return lane === 'Database' || lane === 'Server'
     return false
   }
-
-  const handlePlay = () => {
-    if (isPlaying) {
-      clearInterval(timerRef.current!)
-      setIsPlaying(false)
-    } else {
-      setIsPlaying(true)
-      timerRef.current = setInterval(() => {
-        onStep(Math.min(currentStep + 1, steps.length - 1))
-        if (currentStep >= steps.length - 2) {
-          clearInterval(timerRef.current!)
-          setIsPlaying(false)
-        }
-      }, 1800)
-    }
-  }
-
-  const handleReset = () => {
-    clearInterval(timerRef.current!)
-    setIsPlaying(false)
-    onReset()
-  }
-
-  useEffect(() => () => clearInterval(timerRef.current!), [])
 
   return (
     <div className="space-y-4">

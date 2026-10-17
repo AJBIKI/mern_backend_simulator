@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import type { VizProps } from '@/lib/registerViz'
 import { PlayControls } from '@/components/ui/PlayControls'
+import { useVizPlayback } from '@/hooks/useVizPlayback'
 
 /**
  * URLMatcher
@@ -64,38 +65,16 @@ function highlightURL(url: string, params: Record<string, string> = {}): React.R
   return parts.length > 0 ? parts : <span className="text-slate-200">{url}</span>
 }
 
-export function URLMatcher({ steps, currentStep, onStep, onPlay, onReset }: VizProps) {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+export function URLMatcher({ steps, currentStep, onStep, onReset }: VizProps) {
+  const { isPlaying, handlePlay, handleReset } = useVizPlayback({
+    currentStep,
+    totalSteps: steps.length,
+    onStep,
+    onReset,
+    intervalMs: 1800,
+  })
   const step = steps[currentStep]
-  const data = parseStep(step.highlights)
-
-  const handlePlay = () => {
-    if (isPlaying) {
-      clearInterval(timerRef.current!)
-      setIsPlaying(false)
-    } else {
-      setIsPlaying(true)
-      let s = currentStep
-      timerRef.current = setInterval(() => {
-        s = s + 1
-        if (s >= steps.length) {
-          clearInterval(timerRef.current!)
-          setIsPlaying(false)
-          return
-        }
-        onStep(s)
-      }, 2000)
-    }
-  }
-
-  const handleReset = () => {
-    clearInterval(timerRef.current!)
-    setIsPlaying(false)
-    onReset()
-  }
-
-  useEffect(() => () => clearInterval(timerRef.current!), [])
+  const data = parseStep(step?.highlights)
 
   return (
     <div className="space-y-4">

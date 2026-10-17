@@ -1,3 +1,4 @@
+import { useVizPlayback } from '@/hooks/useVizPlayback'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import type { VizProps } from '@/lib/registerViz'
@@ -45,40 +46,20 @@ function parseCacheFlowData(highlights: string[] | undefined, currentStep: numbe
 }
 
 export function CacheFlow({ steps, currentStep, onStep, onPlay, onReset }: VizProps) {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const { isPlaying, handlePlay, handleReset } = useVizPlayback({
+    currentStep,
+    totalSteps: steps.length,
+    onStep,
+    onReset,
+    intervalMs: 1800,
+  })
   const step = steps[currentStep]
   const data = parseCacheFlowData(step.highlights, currentStep)
 
   const isHit = data.stage === 'hit' || data.cacheStatus === 'HIT'
   const isMiss = data.stage === 'miss' || data.stage === 'fetch_db' || data.stage === 'store_cache'
 
-  const handlePlay = () => {
-    if (isPlaying) {
-      clearInterval(timerRef.current!)
-      setIsPlaying(false)
-    } else {
-      setIsPlaying(true)
-      let s = currentStep
-      timerRef.current = setInterval(() => {
-        s = s + 1
-        if (s >= steps.length) {
-          clearInterval(timerRef.current!)
-          setIsPlaying(false)
-          return
-        }
-        onStep(s)
-      }, 2000)
-    }
-  }
-
-  const handleReset = () => {
-    clearInterval(timerRef.current!)
-    setIsPlaying(false)
-    onReset()
-  }
-
-  useEffect(() => () => clearInterval(timerRef.current!), [])
+  
 
   return (
     <div className="space-y-4">

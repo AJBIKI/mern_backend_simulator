@@ -1,3 +1,4 @@
+import { useVizPlayback } from '@/hooks/useVizPlayback'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
 import type { VizProps } from '@/lib/registerViz'
@@ -79,39 +80,19 @@ function parseTreeData(highlights: string[] | undefined, currentStep: number): T
 }
 
 export function TreeTraversal({ steps, currentStep, onStep, onPlay, onReset }: VizProps) {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const { isPlaying, handlePlay, handleReset } = useVizPlayback({
+    currentStep,
+    totalSteps: steps.length,
+    onStep,
+    onReset,
+    intervalMs: 1800,
+  })
   const step = steps[currentStep]
   const data = parseTreeData(step.highlights, currentStep)
 
   const isIXSCAN = data.mode === 'IXSCAN'
 
-  const handlePlay = () => {
-    if (isPlaying) {
-      clearInterval(timerRef.current!)
-      setIsPlaying(false)
-    } else {
-      setIsPlaying(true)
-      let s = currentStep
-      timerRef.current = setInterval(() => {
-        s = s + 1
-        if (s >= steps.length) {
-          clearInterval(timerRef.current!)
-          setIsPlaying(false)
-          return
-        }
-        onStep(s)
-      }, 2000)
-    }
-  }
-
-  const handleReset = () => {
-    clearInterval(timerRef.current!)
-    setIsPlaying(false)
-    onReset()
-  }
-
-  useEffect(() => () => clearInterval(timerRef.current!), [])
+  
 
   const rootNode = TREE_NODES[0]
   const childNodes = TREE_NODES.slice(1)

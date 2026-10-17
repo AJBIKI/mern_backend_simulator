@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useEffect, useRef } from 'react'
 import type { VizProps } from '@/lib/registerViz'
 import { PlayControls } from '@/components/ui/PlayControls'
+import { useVizPlayback } from '@/hooks/useVizPlayback'
 
 const STAGE_LABELS = ['Request In', 'Logger', 'Auth', 'Body Parser', 'Route Handler']
 
@@ -33,35 +33,16 @@ const stageDot: Record<StageState, string> = {
   throw: 'bg-amber-400',
 }
 
-export function AnimatedPipeline({ steps, currentStep, onStep, onPlay, onReset }: VizProps) {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+export function AnimatedPipeline({ steps, currentStep, onStep, onReset }: VizProps) {
+  const { isPlaying, handlePlay, handleReset } = useVizPlayback({
+    currentStep,
+    totalSteps: steps.length,
+    onStep,
+    onReset,
+    intervalMs: 1800,
+  })
   const step = steps[currentStep]
-  const highlights = step.highlights ?? []
-
-  const handlePlay = () => {
-    if (isPlaying) {
-      clearInterval(timerRef.current!)
-      setIsPlaying(false)
-    } else {
-      setIsPlaying(true)
-      timerRef.current = setInterval(() => {
-        onStep(Math.min(currentStep + 1, steps.length - 1))
-        if (currentStep >= steps.length - 2) {
-          clearInterval(timerRef.current!)
-          setIsPlaying(false)
-        }
-      }, 1800)
-    }
-  }
-
-  const handleReset = () => {
-    clearInterval(timerRef.current!)
-    setIsPlaying(false)
-    onReset()
-  }
-
-  useEffect(() => () => clearInterval(timerRef.current!), [])
+  const highlights = step?.highlights ?? []
 
   return (
     <div className="space-y-4">
