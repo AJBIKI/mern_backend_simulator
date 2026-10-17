@@ -160,6 +160,22 @@ app.get('/dashboard', requireAuth, (req, res) => {
       'How do you write an error-handling middleware in Express, and where should it be registered?',
     ],
     next: ['http-request-anatomy', 'jwt-anatomy', 'error-handling-101'],
+    simple: {
+      oneLiner: 'Like airport security gates checking you one by one.',
+      mentalModel: 'Think of an assembly line where each worker inspects your box before passing it on.',
+      snippet: {
+        lang: 'js',
+        code: `// Simple check before reaching your room
+function checkPass(req, res, next) {
+  if (req.hasTicket) {
+    next() // let them through!
+  } else {
+    res.send('No ticket, stop here!')
+  }
+}`,
+        highlights: { 4: 'emerald', 6: 'rose' },
+      },
+    },
   },
 
   // ─── 3. Client–Server Model ─────────────────────────────────────────────────
@@ -360,6 +376,10 @@ app.post('/users', async (req, res) => {
       'When should you use 201 instead of 200 in a REST API?',
     ],
     next: ['http-request-anatomy', 'rest-principles', 'error-handling-101'],
+    simple: {
+      oneLiner: 'Three numbers that say if your request worked or failed.',
+      mentalModel: 'Like emojis for computers: 200 is thumbs up, 404 is shrug, 500 is explosion.',
+    },
   },
 
   // ─── 5. Idempotency & Safe Methods ──────────────────────────────────────────

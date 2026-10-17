@@ -29,6 +29,11 @@ export interface Concept {
   pitfalls: string[];      // 3 bullets
   interview: string[];     // 2 questions
   next: string[];          // 2–3 concept ids
+  simple?: {
+    oneLiner: string;      // 10 words max, zero jargon
+    mentalModel: string;   // one short analogy
+    snippet?: Snippet;     // optional; fallback to full snippet
+  };
 }
 
 // ─── Glossary Term ───────────────────────────────────────────────────────────

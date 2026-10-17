@@ -1,6 +1,7 @@
 import { useParams, Navigate } from 'react-router-dom'
 import { conceptMap } from '@/content'
 import { ConceptPage } from '@/components/concept/ConceptPage'
+import { SEO } from '@/components/common/SEO'
 
 export function ConceptView() {
   const { id } = useParams<{ id: string }>()
@@ -10,5 +11,13 @@ export function ConceptView() {
     return <Navigate to="/" replace />
   }
 
-  return <ConceptPage concept={concept} />
+  return (
+    <>
+      <SEO
+        title={`${concept.title} (Level ${concept.level}) — Backend Revision`}
+        description={concept.oneLiner}
+      />
+      <ConceptPage concept={concept} />
+    </>
+  )
 }

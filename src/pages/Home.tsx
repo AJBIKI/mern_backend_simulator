@@ -1,6 +1,18 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import {
+  Download,
+  Upload,
+  ChevronDown,
+  ChevronUp,
+  Compass,
+  CheckCircle,
+  AlertCircle,
+  Zap,
+  BookOpen,
+  Repeat
+} from 'lucide-react'
 import { level1Concepts } from '@/content/level1'
 import { level2Concepts } from '@/content/level2'
 import { level3Concepts } from '@/content/level3'
@@ -10,7 +22,10 @@ import { useProgress } from '@/hooks/useProgress'
 import { LevelBadge } from '@/components/ui/LevelBadge'
 import { ProgressRing } from '@/components/layout/ProgressRing'
 import { getDueCardsCount } from '@/lib/flashcards'
+import { SEO } from '@/components/common/SEO'
 import type { Concept } from '@/content/types'
+
+const ONBOARDING_KEY = 'backend-revision-onboarding-open'
 
 const levels = [
   {
@@ -86,6 +101,37 @@ export function Home() {
   const navigate = useNavigate()
   const { isComplete, levelProgress } = useProgress()
   const [dueCount, setDueCount] = useState<number>(() => getDueCardsCount())
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Onboarding Collapsible State
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem(ONBOARDING_KEY)
+      return saved !== null ? JSON.parse(saved) : true
+    } catch {
+      return true
+    }
+  })
+
+  // Toast Notification State
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null)
+
+  const showToast = (message: string, type: 'success' | 'error') => {
+    setToast({ message, type })
+    setTimeout(() => {
+      setToast(null)
+    }, 3500)
+  }
+
+  const toggleOnboarding = () => {
+    const next = !isOnboardingOpen
+    setIsOnboardingOpen(next)
+    try {
+      localStorage.setItem(ONBOARDING_KEY, JSON.stringify(next))
+    } catch {
+      // ignore
+    }
+  }
 
   useEffect(() => {
     const updateDue = () => setDueCount(getDueCardsCount())
@@ -102,8 +148,109 @@ export function Home() {
     navigate(`/concept/${target}#quiz`)
   }
 
+  // Export Progress Handler
+  const handleExportProgress = () => {
+    try {
+      const completed = JSON.parse(localStorage.getItem('backend-revision-completed') || '[]')
+      const quizResults = JSON.parse(localStorage.getItem('backend-revision-quiz-results') || '{}')
+      const interviewResults = JSON.parse(localStorage.getItem('backend-revision-interview-results') || '{}')
+      const flashcards = JSON.parse(localStorage.getItem('backend-revision-flashcards') || '[]')
+      const simpleMode = JSON.parse(localStorage.getItem('backend-revision-simple-mode') || 'false')
+      const viewMode = localStorage.getItem('backend-revision-view-mode') || 'reading'
+
+      const exportPayload = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        completed,
+        quizResults,
+        interviewResults,
+        flashcards,
+        simpleMode,
+        viewMode,
+      }
+
+      const blob = new Blob([JSON.stringify(exportPayload, null, 2)], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `backend-revision-progress-${new Date().toISOString().slice(0, 10)}.json`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+
+      showToast('Progress exported successfully!', 'success')
+    } catch (err) {
+      showToast('Failed to export progress', 'error')
+    }
+  }
+
+  // Import Progress Handler
+  const handleImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const reader = new FileReader()
+    reader.onload = event => {
+      try {
+        const text = event.target?.result as string
+        const parsed = JSON.parse(text)
+
+        if (!parsed || parsed.version !== 1 || !Array.isArray(parsed.completed)) {
+          showToast('Invalid progress backup file (requires version 1 schema)', 'error')
+          return
+        }
+
+        // Merge or overwrite saved localStorage items
+        localStorage.setItem('backend-revision-completed', JSON.stringify(parsed.completed || []))
+        if (parsed.quizResults) {
+          localStorage.setItem('backend-revision-quiz-results', JSON.stringify(parsed.quizResults))
+        }
+        if (parsed.interviewResults) {
+          localStorage.setItem('backend-revision-interview-results', JSON.stringify(parsed.interviewResults))
+        }
+        if (parsed.flashcards) {
+          localStorage.setItem('backend-revision-flashcards', JSON.stringify(parsed.flashcards))
+        }
+        if (typeof parsed.simpleMode === 'boolean') {
+          localStorage.setItem('backend-revision-simple-mode', JSON.stringify(parsed.simpleMode))
+        }
+        if (parsed.viewMode) {
+          localStorage.setItem('backend-revision-view-mode', parsed.viewMode)
+        }
+
+        // Dispatch sync events across app
+        window.dispatchEvent(new Event('progress-updated'))
+        window.dispatchEvent(new Event('flashcards-updated'))
+        window.dispatchEvent(new Event('simple-mode-updated'))
+        window.dispatchEvent(new Event('storage'))
+
+        showToast(`Imported progress: ${parsed.completed.length} concepts marked completed!`, 'success')
+      } catch (err) {
+        showToast('Failed to parse import file. Please check JSON format.', 'error')
+      } finally {
+        if (fileInputRef.current) fileInputRef.current.value = ''
+      }
+    }
+    reader.readAsText(file)
+  }
+
   return (
     <div className="max-w-6xl mx-auto px-6 py-10 space-y-12">
+      <SEO
+        title="Backend Revision — MERN Concepts Fast"
+        description="Visual mental models for 73 core backend concepts across HTTP, Auth, Databases, and Node.js internals."
+      />
+
+      {/* Hidden file input for progress import */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".json"
+        className="hidden"
+        onChange={handleImportFile}
+      />
+
       {/* Hero header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -122,6 +269,140 @@ export function Home() {
         <p className="text-slate-400 text-base max-w-xl">
           Visual mental models for core backend concepts. Stepping through animations is faster than reading docs.
         </p>
+      </motion.div>
+
+      {/* Collapsible "How to use this site" Onboarding Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="rounded-2xl border border-slate-800 bg-slate-900/60 overflow-hidden shadow-xl"
+      >
+        <button
+          onClick={toggleOnboarding}
+          className="w-full flex items-center justify-between p-5 text-left hover:bg-slate-800/40 transition-colors cursor-pointer"
+        >
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400">
+              <Compass className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-slate-100 font-mono">
+                How to use this site
+              </h2>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Recommended revision tracks: 3-day blitz, 7-day deep mastery, or 15-minute daily habit.
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 text-slate-400 font-mono text-xs">
+            <span>{isOnboardingOpen ? 'Collapse' : 'Expand'}</span>
+            {isOnboardingOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </div>
+        </button>
+
+        <AnimatePresence>
+          {isOnboardingOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="border-t border-slate-800/80 p-6 grid md:grid-cols-3 gap-6 bg-slate-950/40"
+            >
+              {/* Track 1: 3-Day Blitz */}
+              <div className="p-5 rounded-xl border border-amber-500/20 bg-amber-500/5 space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/30">
+                    <Zap className="w-4 h-4" />
+                  </div>
+                  <h3 className="font-bold text-sm text-slate-100 font-mono">
+                    3-Day Blitz
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                  Fast-paced interview preparation track focused on high-frequency questions.
+                </p>
+                <ul className="text-xs text-slate-300 space-y-2 font-mono">
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-amber-400 font-bold">•</span>
+                    <span><strong className="text-slate-100">Day 1:</strong> Level 1 HTTP & Middleware + Output Quizzes.</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-amber-400 font-bold">•</span>
+                    <span><strong className="text-slate-100">Day 2:</strong> Level 2 JWTs, Indexing (ESR), and Rate Limiting.</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-amber-400 font-bold">•</span>
+                    <span><strong className="text-slate-100">Day 3:</strong> Level 3 Event Loop, BullMQ, and Interview Practice.</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Track 2: 7-Day Deep Mastery */}
+              <div className="p-5 rounded-xl border border-indigo-500/20 bg-indigo-500/5 space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
+                    <BookOpen className="w-4 h-4" />
+                  </div>
+                  <h3 className="font-bold text-sm text-slate-100 font-mono">
+                    7-Day Mastery
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                  Comprehensive end-to-end review of all 73 concepts with interactive visualizations.
+                </p>
+                <ul className="text-xs text-slate-300 space-y-2 font-mono">
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-indigo-400 font-bold">•</span>
+                    <span><strong className="text-slate-100">Days 1–2:</strong> Complete all 20 Level 1 concepts.</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-indigo-400 font-bold">•</span>
+                    <span><strong className="text-slate-100">Days 3–4:</strong> Master 26 Level 2 architectural patterns.</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-indigo-400 font-bold">•</span>
+                    <span><strong className="text-slate-100">Days 5–6:</strong> Conquer 27 Level 3 distributed concepts.</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-indigo-400 font-bold">•</span>
+                    <span><strong className="text-slate-100">Day 7:</strong> Explore Terminology Graph + Full Flashcard Review.</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Track 3: Daily Habits */}
+              <div className="p-5 rounded-xl border border-emerald-500/20 bg-emerald-500/5 space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                    <Repeat className="w-4 h-4" />
+                  </div>
+                  <h3 className="font-bold text-sm text-slate-100 font-mono">
+                    Daily Habits
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                  Build long-term retention in 15 minutes a day using the SM-2 algorithm.
+                </p>
+                <ul className="text-xs text-slate-300 space-y-2 font-mono">
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-emerald-400 font-bold">•</span>
+                    <span><strong className="text-slate-100">10 mins:</strong> Review due SM-2 flashcards before sleep.</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-emerald-400 font-bold">•</span>
+                    <span><strong className="text-slate-100">5 mins:</strong> Step through 1 visualizer and toggle Simple mode.</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-emerald-400 font-bold">•</span>
+                    <span><strong className="text-slate-100">Bonus:</strong> Solve 1 random code prediction quiz daily.</span>
+                  </li>
+                </ul>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
 
       {/* Level cards */}
@@ -319,6 +600,43 @@ export function Home() {
         </motion.div>
       </div>
 
+      {/* Progress Data Actions: Export, Import, Reset */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.48 }}
+        className="p-5 rounded-2xl border border-slate-800 bg-slate-900/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+      >
+        <div className="space-y-1">
+          <h4 className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+            <span>💾 Data & Progress Sync</span>
+          </h4>
+          <p className="text-xs text-slate-500">
+            Export your completed concepts, quiz ratings, and spaced repetition card schedule as JSON.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            onClick={handleExportProgress}
+            className="px-3.5 py-2 rounded-xl text-xs font-mono bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:border-slate-600 transition flex items-center gap-2 cursor-pointer"
+            title="Download your progress as JSON"
+          >
+            <Download className="w-3.5 h-3.5 text-indigo-400" />
+            <span>Export Progress</span>
+          </button>
+
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="px-3.5 py-2 rounded-xl text-xs font-mono bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 hover:border-slate-600 transition flex items-center gap-2 cursor-pointer"
+            title="Restore progress from a backup JSON file"
+          >
+            <Upload className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Import Progress</span>
+          </button>
+        </div>
+      </motion.div>
+
       {/* Quick stats footer */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -345,6 +663,30 @@ export function Home() {
           Progress saved in <span className="text-slate-400">localStorage</span>
         </div>
       </motion.div>
+
+      {/* Floating Toast Notification */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            transition={{ duration: 0.15 }}
+            className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-xl shadow-2xl border text-xs font-mono flex items-center gap-2.5 backdrop-blur-md ${
+              toast.type === 'success'
+                ? 'bg-slate-900/95 border-emerald-500/40 text-emerald-300'
+                : 'bg-slate-900/95 border-rose-500/40 text-rose-300'
+            }`}
+          >
+            {toast.type === 'success' ? (
+              <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+            ) : (
+              <AlertCircle className="w-4 h-4 text-rose-400 flex-shrink-0" />
+            )}
+            <span>{toast.message}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

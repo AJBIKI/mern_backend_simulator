@@ -45,8 +45,8 @@ export function EventLoopClock({ steps, currentStep, onStep, onReset }: VizProps
       <div className="rounded-xl bg-slate-900 border border-slate-800 overflow-hidden">
         <div className="flex flex-col md:flex-row items-center gap-6 p-6">
           {/* Clock SVG */}
-          <div className="flex-shrink-0">
-            <svg width={320} height={320} viewBox="0 0 320 320">
+          <div className="w-full max-w-[280px] sm:max-w-[320px] mx-auto flex-shrink-0">
+            <svg viewBox="0 0 320 320" className="w-full h-auto" preserveAspectRatio="xMidYMid meet">
               {/* Outer ring */}
               <circle cx={cx} cy={cy} r={R + 20} fill="none" stroke="#1e293b" strokeWidth="1" />
               <circle cx={cx} cy={cy} r={R} fill="none" stroke="#334155" strokeWidth="1.5" strokeDasharray="4 4" />

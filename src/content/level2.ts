@@ -678,6 +678,10 @@ const orderSchema = new Schema({
       'What is MongoDB\'s document size limit, and how does it influence data modeling decisions?',
     ],
     next: ['populate-vs-lookup', 'mongoose-schema-deep-dive', 'transactions-and-sessions'],
+    simple: {
+      oneLiner: 'Putting photos in an album versus writing their web links.',
+      mentalModel: 'Keep phone contacts in your pocket; keep heavy encyclopedias on the shelf and bookmark them.',
+    },
   },
 
   // ─── 9. populate() vs $lookup ───────────────────────────────────────────────
@@ -1032,6 +1036,10 @@ export async function verifyPassword(plain: string, hash: string): Promise<boole
       'How does salting prevent rainbow table attacks?',
     ],
     next: ['jwt-anatomy', 'sessions-vs-jwt', 'access-refresh-tokens'],
+    simple: {
+      oneLiner: 'Scrambling a secret with spices so nobody can unscramble it.',
+      mentalModel: 'Like baking cake from ingredients: easy to bake, impossible to turn back into flour.',
+    },
   },
 
   // ─── 14. Sessions vs JWT ─────────────────────────────────────────────────────
@@ -1132,6 +1140,10 @@ app.post('/logout', (req, res) => {
       'If you must use JWTs, how would you implement a mechanism to ban or revoke a compromised token?',
     ],
     next: ['jwt-anatomy', 'access-refresh-tokens', 'cookies-security-flags'],
+    simple: {
+      oneLiner: 'Hotel room key card versus guest list at the desk.',
+      mentalModel: 'Sessions check the front desk notebook; JWT is a key card with your room written on it.',
+    },
   },
 
   // ─── 15. Access + Refresh Tokens ────────────────────────────────────────────
@@ -1232,6 +1244,10 @@ app.post('/logout', (req, res) => {
       'Explain how Refresh Token Rotation with Automatic Reuse Detection protects against token theft.',
     ],
     next: ['jwt-anatomy', 'sessions-vs-jwt', 'cookies-security-flags'],
+    simple: {
+      oneLiner: 'Short-lived movie ticket paired with a long-term membership card.',
+      mentalModel: 'Your movie ticket expires in two hours, but your season pass gets you new tickets.',
+    },
   },
 
   // ─── 16. Cookies & Security Flags ────────────────────────────────────────────
@@ -1467,6 +1483,19 @@ app.use('/api/v1/auth/login', authLimiter)`,
       'Why is using an in-memory rate limiter problematic in a containerized, horizontally scaled production environment?',
     ],
     next: ['security-headers-injection', 'auth-middleware-rbac', 'http-caching-etag'],
+    simple: {
+      oneLiner: 'Stopping people from pushing the elevator button a thousand times.',
+      mentalModel: 'Like a bouncer only letting five people enter per minute.',
+      snippet: {
+        lang: 'js',
+        code: `// Simple counter
+let clicks = 0
+if (++clicks > 5) {
+  res.send('Too fast! Please wait a minute.')
+}`,
+        highlights: { 3: 'rose' },
+      },
+    },
   },
 
   // ─── 19. Security Headers & Injection ────────────────────────────────────────
@@ -2027,6 +2056,19 @@ export function verifyToken(token: string) {
       'What is the difference between a JWT being "invalid" versus "expired"?',
     ],
     next: ['middleware-pipeline', 'indexing-collscan-ixscan', 'cache-aside-pattern'],
+    simple: {
+      oneLiner: 'A stamped digital wristband proving who you are.',
+      mentalModel: 'Like a concert wristband with your seat number that security can verify instantly.',
+      snippet: {
+        lang: 'js',
+        code: `// Give out stamped wristband
+const wristband = jwt.sign({ user: 'Alice' }, 'secretKey')
+
+// Check stamp at the door
+const guest = jwt.verify(wristband, 'secretKey')`,
+        highlights: { 2: 'emerald', 5: 'emerald' },
+      },
+    },
   },
 
   // ─── 26. Indexing: COLLSCAN vs IXSCAN (existing Level 2 concept) ────────────
@@ -2103,5 +2145,9 @@ console.log(plan.queryPlanner.winningPlan.stage)
       'Explain the concept of index selectivity and why it matters for query performance.',
     ],
     next: ['jwt-anatomy', 'cache-aside-pattern', 'event-loop-deep-dive'],
+    simple: {
+      oneLiner: 'Looking at the book index instead of reading every page.',
+      mentalModel: 'Like finding a word in the glossary instead of reading the whole encyclopedia.',
+    },
   },
 ]

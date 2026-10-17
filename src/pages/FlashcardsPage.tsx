@@ -26,6 +26,7 @@ import {
   type FlashcardSource,
   type SM2Rating
 } from '@/lib/flashcards'
+import { SEO } from '@/components/common/SEO'
 
 const levelColors = {
   1: {
@@ -245,6 +246,10 @@ export function FlashcardsPage() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+      <SEO
+        title="Spaced Repetition Flashcards — Backend Revision"
+        description="SM-2 spaced repetition cards covering backend terminology, pitfalls, and interview answers."
+      />
       {/* Top Header */}
       <div className="border-b border-slate-800 bg-slate-900/60 backdrop-blur sticky top-0 z-20 px-6 py-4">
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">

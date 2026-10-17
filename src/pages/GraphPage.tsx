@@ -19,6 +19,7 @@ import {
 import { glossary } from '@/content/glossary'
 import type { GlossaryTerm } from '@/content/types'
 import { allConcepts, conceptMap } from '@/content'
+import { SEO } from '@/components/common/SEO'
 
 interface GraphNode {
   id: string
@@ -304,6 +305,10 @@ export function GraphPage() {
 
   return (
     <div className="relative w-full h-[calc(100vh-3.5rem)] bg-slate-950 overflow-hidden flex" ref={containerRef}>
+      <SEO
+        title="Terminology Graph — Backend Revision"
+        description="Interactive 2D force-directed map connecting 380+ backend terms by co-occurrence across 73 concepts."
+      />
       {/* Top Floating Controls & Search */}
       <div className="absolute top-5 left-6 z-20 flex flex-col gap-3 w-80 sm:w-96 pointer-events-auto">
         <div className="relative">
@@ -406,8 +411,8 @@ export function GraphPage() {
         )}
       </div>
 
-      {/* Bottom-Left Legend */}
-      <div className="absolute bottom-6 left-6 z-20 bg-slate-900/90 backdrop-blur border border-slate-800/90 rounded-2xl p-4 shadow-2xl text-xs flex flex-col gap-2.5 max-w-xs">
+      {/* Bottom-Left Legend (desktop only) */}
+      <div className="hidden md:flex absolute bottom-6 left-6 z-20 bg-slate-900/90 backdrop-blur border border-slate-800/90 rounded-2xl p-4 shadow-2xl text-xs flex-col gap-2.5 max-w-xs">
         <div className="font-semibold text-slate-200 flex items-center gap-1.5 font-mono text-[11px] tracking-wide uppercase">
           <Network className="w-3.5 h-3.5 text-indigo-400" />
           Terminology Graph
@@ -444,15 +449,15 @@ export function GraphPage() {
         </div>
       </div>
 
-      {/* Right Side Detail Drawer */}
+      {/* Right Side Detail Drawer (Bottom sheet on mobile, slide-over on desktop) */}
       <AnimatePresence>
         {selectedNode && (
           <motion.div
-            initial={{ x: '100%', opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: '100%', opacity: 0 }}
+            initial={{ opacity: 0, y: typeof window !== 'undefined' && window.innerWidth < 640 ? 80 : 0, x: typeof window !== 'undefined' && window.innerWidth < 640 ? 0 : '100%' }}
+            animate={{ opacity: 1, y: 0, x: 0 }}
+            exit={{ opacity: 0, y: typeof window !== 'undefined' && window.innerWidth < 640 ? 80 : 0, x: typeof window !== 'undefined' && window.innerWidth < 640 ? 0 : '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="absolute top-0 right-0 bottom-0 w-full sm:w-[420px] bg-slate-900/95 backdrop-blur-md border-l border-slate-800 z-30 shadow-2xl flex flex-col"
+            className="fixed sm:absolute bottom-0 sm:top-0 right-0 left-0 sm:left-auto max-h-[75vh] sm:max-h-full sm:bottom-0 w-full sm:w-[420px] bg-slate-900/95 backdrop-blur-md border-t sm:border-t-0 sm:border-l border-slate-800 z-30 shadow-2xl rounded-t-2xl sm:rounded-none flex flex-col"
           >
             {/* Drawer Header */}
             <div className="p-6 border-b border-slate-800 flex items-center justify-between">

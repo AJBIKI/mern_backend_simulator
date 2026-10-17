@@ -5,6 +5,7 @@ import { allConcepts, type Concept } from '@/content'
 import { LevelBadge } from '@/components/ui/LevelBadge'
 import { getInterviewAnswer } from '@/lib/interviewAnswers'
 import { useProgress } from '@/hooks/useProgress'
+import { SEO } from '@/components/common/SEO'
 
 interface InterviewItem {
   concept: Concept
@@ -105,6 +106,10 @@ export function InterviewPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-8 space-y-6">
+      <SEO
+        title="Interview Practice — Backend Revision"
+        description="Flashcard style interview practice with 146 questions and 3-line model answers across 73 backend concepts."
+      />
       {/* Top Bar: Title & Session Stats */}
       <div className="flex items-center justify-between gap-4 flex-wrap pb-4 border-b border-slate-800">
         <div>

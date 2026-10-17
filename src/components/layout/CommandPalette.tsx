@@ -179,7 +179,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 sm:px-6">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-0 sm:pt-20 px-0 sm:px-6">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -195,7 +195,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: -10 }}
             transition={{ duration: 0.15 }}
-            className="relative w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col z-10"
+            className="relative w-full h-full sm:h-auto max-w-2xl bg-slate-900 border-0 sm:border border-slate-800 rounded-none sm:rounded-2xl shadow-2xl overflow-hidden flex flex-col z-10"
           >
             {/* Search Input Bar */}
             <div className="flex items-center gap-3 px-4 py-3.5 border-b border-slate-800 bg-slate-900/90">
@@ -260,7 +260,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
             )}
 
             {/* Results List */}
-            <div className="max-h-96 overflow-y-auto p-2 space-y-1">
+            <div className="flex-1 sm:flex-initial sm:max-h-96 overflow-y-auto p-2 space-y-1">
               {results.length > 0 ? (
                 results.map(({ concept, snippet }, idx) => {
                   const isSelected = idx === selectedIndex

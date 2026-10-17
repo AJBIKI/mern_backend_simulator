@@ -78,6 +78,34 @@ export function useVizPlayback({
     }
   }, [onReset, onStep, clearTimer])
 
+  // Keyboard navigation: Space to play/pause, Left/Right arrows to step
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+        return
+      }
+
+      if (e.code === 'Space') {
+        e.preventDefault()
+        handlePlay()
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        if (currentStepRef.current < totalSteps - 1) {
+          onStep(currentStepRef.current + 1)
+        }
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        if (currentStepRef.current > 0) {
+          onStep(currentStepRef.current - 1)
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [handlePlay, onStep, totalSteps])
+
   return {
     isPlaying,
     handlePlay,

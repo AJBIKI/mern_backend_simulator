@@ -90,20 +90,38 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   }, [filter, searchQuery, getStatus, levelStats])
 
   return (
-    <AnimatePresence initial={false}>
-      <motion.aside
-        animate={{ width: collapsed ? 0 : 256 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="relative flex-shrink-0 overflow-hidden border-r border-slate-800 bg-slate-900 h-full"
-      >
-        <div className="w-64 h-full overflow-hidden flex flex-col">
-          {/* Logo area */}
-          <div className="flex items-center gap-2 px-4 py-3.5 border-b border-slate-800 flex-shrink-0">
-            <div className="w-5 h-5 rounded bg-gradient-to-br from-emerald-400 via-amber-400 to-rose-400 flex-shrink-0" />
-            <span className="font-mono font-semibold text-sm text-slate-100 truncate">
-              Backend Revision
-            </span>
-          </div>
+    <>
+      {/* Mobile Drawer Backdrop */}
+      {!collapsed && (
+        <div
+          className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-40 md:hidden"
+          onClick={onToggle}
+        />
+      )}
+
+      <AnimatePresence initial={false}>
+        <motion.aside
+          animate={{ width: collapsed ? 0 : 256 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          className="fixed md:relative inset-y-0 left-0 z-50 md:z-auto flex-shrink-0 overflow-hidden border-r border-slate-800 bg-slate-900 h-full shadow-2xl md:shadow-none"
+        >
+          <div className="w-64 h-full overflow-hidden flex flex-col">
+            {/* Logo area */}
+            <div className="flex items-center justify-between px-4 py-3.5 border-b border-slate-800 flex-shrink-0">
+              <div className="flex items-center gap-2 truncate">
+                <div className="w-5 h-5 rounded bg-gradient-to-br from-emerald-400 via-amber-400 to-rose-400 flex-shrink-0" />
+                <span className="font-mono font-semibold text-sm text-slate-100 truncate">
+                  Backend Revision
+                </span>
+              </div>
+              <button
+                onClick={onToggle}
+                className="md:hidden text-slate-400 hover:text-slate-100 p-1 text-sm font-mono cursor-pointer"
+                aria-label="Close drawer"
+              >
+                ✕
+              </button>
+            </div>
 
           {/* Controls: search input + filter tabs */}
           <div className="p-2.5 border-b border-slate-800/80 space-y-2 flex-shrink-0 bg-slate-900/60">
@@ -273,15 +291,16 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
           </div>
         </div>
 
-        {/* Collapse toggle button on the edge */}
+        {/* Collapse toggle button on the edge (desktop only) */}
         <button
           onClick={onToggle}
-          className="absolute top-4 -right-3 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 hover:text-slate-200 hover:bg-slate-700 transition-all z-10 text-xs"
+          className="hidden md:flex absolute top-4 -right-3 w-6 h-6 rounded-full bg-slate-800 border border-slate-700 items-center justify-center text-slate-400 hover:text-slate-200 hover:bg-slate-700 transition-all z-10 text-xs cursor-pointer"
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           {collapsed ? '›' : '‹'}
         </button>
       </motion.aside>
     </AnimatePresence>
+    </>
   )
 }

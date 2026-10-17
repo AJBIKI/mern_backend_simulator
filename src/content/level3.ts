@@ -785,6 +785,10 @@ new Worker('emails', async (job) => {
       'How does exponential backoff with jitter protect downstream services during system outages?',
     ],
     next: ['idempotency-keys', 'backpressure', 'redis-caching'],
+    simple: {
+      oneLiner: 'A conveyor belt holding to-do notes for busy helpers.',
+      mentalModel: 'Like dropping letters into a postbox; the mailman picks them up whenever he arrives.',
+    },
   },
 
   // ─── 11. Idempotency Keys ───────────────────────────────────────────────────
@@ -960,6 +964,10 @@ const report = await Order.find()
       'Why can reading from MongoDB secondaries result in dirty or stale reads?',
     ],
     next: ['sharding', 'cap-theorem-acid-vs-base', 'connection-pooling'],
+    simple: {
+      oneLiner: 'Multiple copies of your notebook kept by trusty friends.',
+      mentalModel: 'You write in the master notebook, and three friends instantly copy your sentences in case you lose yours.',
+    },
   },
 
   // ─── 13. Sharding ────────────────────────────────────────────────────────────
@@ -1029,6 +1037,10 @@ db.orders.find({ totalAmount: { $gt: 500 } })`,
       'What is a scatter-gather query in a sharded cluster and why is it detrimental to performance?',
     ],
     next: ['replica-sets-read-write-concern', 'cap-theorem-acid-vs-base', 'horizontal-scaling-load-balancing'],
+    simple: {
+      oneLiner: 'Splitting a giant library across three different buildings.',
+      mentalModel: 'Putting books A-H in Room 1, I-P in Room 2, and Q-Z in Room 3 so crowds do not jam.',
+    },
   },
 
   // ─── 14. CAP Theorem & ACID vs BASE ──────────────────────────────────────────
@@ -1129,6 +1141,10 @@ const feed = await Post.find()
       'How does the BASE model differ from traditional relational ACID database guarantees?',
     ],
     next: ['replica-sets-read-write-concern', 'sharding', 'microservices-vs-monolith'],
+    simple: {
+      oneLiner: 'Pick two: always right, always answering, or survives cuts.',
+      mentalModel: 'When phone lines break between two offices, you either stay silent or risk telling two different stories.',
+    },
   },
 
   // ─── 15. Horizontal Scaling & Load Balancing ────────────────────────────────
@@ -2148,6 +2164,17 @@ setImmediate(() => console.log('5 — check phase'))
       'What is the difference between setImmediate() and setTimeout(fn, 0)?',
     ],
     next: ['event-loop-phases-deep-dive', 'blocking-the-loop', 'cache-aside-pattern'],
+    simple: {
+      oneLiner: 'One waiter rapidly taking orders while the kitchen cooks.',
+      mentalModel: 'A busy chef handles food while a buzzer notifies the waiter when a dish is ready.',
+      snippet: {
+        lang: 'js',
+        code: `console.log('1: Order food')
+setTimeout(() => console.log('3: Food ready!'), 0)
+console.log('2: Pour glass of water')`,
+        highlights: { 1: 'emerald', 2: 'amber', 3: 'emerald' },
+      },
+    },
   },
 
   // ─── 27. Cache-Aside Pattern (Original Phase 1 concept) ──────────────────────
@@ -2228,5 +2255,19 @@ setImmediate(() => console.log('5 — check phase'))
       'Describe a scenario where Cache-Aside could serve stale data, and how you would mitigate it.',
     ],
     next: ['redis-caching', 'cache-invalidation-strategies', 'event-loop-deep-dive'],
+    simple: {
+      oneLiner: 'Check your pocket first before walking to the bookstore.',
+      mentalModel: "Keep your favorite pen on your desk so you don't go to the supply closet every time.",
+      snippet: {
+        lang: 'js',
+        code: `// Check pocket first
+let item = cache.get(id)
+if (!item) {
+  item = database.find(id) // closet (slow)
+  cache.set(id, item)      // keep in pocket
+}`,
+        highlights: { 2: 'emerald', 4: 'amber', 5: 'emerald' },
+      },
+    },
   },
 ]

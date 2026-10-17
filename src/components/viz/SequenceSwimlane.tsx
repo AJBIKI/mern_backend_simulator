@@ -158,6 +158,7 @@ function ArrowBetween({ from, to }: { from: number; to: number }) {
       viewBox="0 0 600 40"
       className="w-full"
       style={{ height: 40, overflow: 'visible' }}
+      preserveAspectRatio="xMidYMid meet"
     >
       <defs>
         <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
