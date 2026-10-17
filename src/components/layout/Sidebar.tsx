@@ -218,18 +218,52 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             ))}
           </nav>
 
-          {/* Bottom Interview Link */}
-          <div className="p-2 border-t border-slate-800 bg-slate-900/90 flex-shrink-0">
+          {/* Bottom Navigation Links */}
+          <div className="p-2 border-t border-slate-800 bg-slate-900/90 flex-shrink-0 space-y-1">
             <button
-              onClick={() => navigate('/interview')}
-              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-mono transition-all group ${
-                location.pathname === '/interview'
+              onClick={() => navigate('/flashcards')}
+              className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-mono transition-all group ${
+                location.pathname === '/flashcards'
                   ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-semibold'
                   : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
               }`}
             >
               <div className="flex items-center gap-2 truncate">
-                <span className="text-amber-400 flex-shrink-0">🎯</span>
+                <span className="text-amber-400 flex-shrink-0">🗂️</span>
+                <span className="truncate">Flashcards</span>
+              </div>
+              <span className="text-[10px] text-slate-500 group-hover:text-slate-300 flex-shrink-0">
+                →
+              </span>
+            </button>
+
+            <button
+              onClick={() => navigate('/graph')}
+              className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-mono transition-all group ${
+                location.pathname === '/graph'
+                  ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 font-semibold'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
+              }`}
+            >
+              <div className="flex items-center gap-2 truncate">
+                <span className="text-indigo-400 flex-shrink-0">🌐</span>
+                <span className="truncate">Terminology Graph</span>
+              </div>
+              <span className="text-[10px] text-slate-500 group-hover:text-slate-300 flex-shrink-0">
+                →
+              </span>
+            </button>
+
+            <button
+              onClick={() => navigate('/interview')}
+              className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-mono transition-all group ${
+                location.pathname === '/interview'
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
+              }`}
+            >
+              <div className="flex items-center gap-2 truncate">
+                <span className="text-emerald-400 flex-shrink-0">🎯</span>
                 <span className="truncate">Interview Practice</span>
               </div>
               <span className="text-[10px] text-slate-500 group-hover:text-slate-300 flex-shrink-0">

@@ -1,12 +1,15 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { level1Concepts } from '@/content/level1'
 import { level2Concepts } from '@/content/level2'
 import { level3Concepts } from '@/content/level3'
 import { allConcepts } from '@/content'
+import { glossary } from '@/content/glossary'
 import { useProgress } from '@/hooks/useProgress'
 import { LevelBadge } from '@/components/ui/LevelBadge'
 import { ProgressRing } from '@/components/layout/ProgressRing'
+import { getDueCardsCount } from '@/lib/flashcards'
 import type { Concept } from '@/content/types'
 
 const levels = [
@@ -62,7 +65,7 @@ function ConceptRow({ concept, isComplete, onClick }: { concept: Concept; isComp
   return (
     <button
       onClick={onClick}
-      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-slate-800/50 transition-colors group"
+      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-slate-800/50 transition-colors group cursor-pointer"
     >
       <span
         className={`w-1.5 h-1.5 rounded-full flex-shrink-0 transition-colors ${
@@ -82,6 +85,17 @@ function ConceptRow({ concept, isComplete, onClick }: { concept: Concept; isComp
 export function Home() {
   const navigate = useNavigate()
   const { isComplete, levelProgress } = useProgress()
+  const [dueCount, setDueCount] = useState<number>(() => getDueCardsCount())
+
+  useEffect(() => {
+    const updateDue = () => setDueCount(getDueCardsCount())
+    window.addEventListener('flashcards-updated', updateDue)
+    window.addEventListener('storage', updateDue)
+    return () => {
+      window.removeEventListener('flashcards-updated', updateDue)
+      window.removeEventListener('storage', updateDue)
+    }
+  }, [])
 
   const handleQuizRandom = () => {
     const target = quizConcepts[Math.floor(Math.random() * quizConcepts.length)]
@@ -112,7 +126,7 @@ export function Home() {
 
       {/* Level cards */}
       <div className="grid md:grid-cols-3 gap-6">
-        {levels.map(({ level, label, color, ringColor, description, concepts, gradient, border, hover }, i) => {
+        {levels.map(({ level, label, ringColor, description, concepts, gradient, border, hover }, i) => {
           const prog = levelProgress(level)
           const done = concepts.filter(c => isComplete(c.id)).length
 
@@ -138,39 +152,39 @@ export function Home() {
                 </div>
               </div>
 
-              {/* Progress bar */}
-              <div className="space-y-1.5">
-                <div className="flex justify-between text-xs font-mono text-slate-600">
-                  <span>{done}/{concepts.length} done</span>
+              {/* Concept preview list */}
+              <div className="space-y-1 border-t border-slate-800/60 pt-4">
+                <div className="flex items-center justify-between text-xs text-slate-500 font-mono mb-2 px-1">
+                  <span>{done} of {concepts.length} completed</span>
                   <span>{prog}%</span>
                 </div>
-                <div className="h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${prog}%` }}
-                    transition={{ duration: 0.8, ease: 'easeOut', delay: i * 0.1 + 0.3 }}
-                    className="h-full rounded-full"
-                    style={{ backgroundColor: color }}
-                  />
+                <div className="space-y-0.5 max-h-52 overflow-y-auto pr-1">
+                  {concepts.slice(0, 5).map(c => (
+                    <ConceptRow
+                      key={c.id}
+                      concept={c}
+                      isComplete={isComplete(c.id)}
+                      onClick={() => navigate(`/concept/${c.id}`)}
+                    />
+                  ))}
+                  {concepts.length > 5 && (
+                    <button
+                      onClick={() => navigate(`/concept/${concepts[0].id}`)}
+                      className="w-full text-center text-xs font-mono text-slate-500 hover:text-slate-300 py-1.5 transition-colors cursor-pointer"
+                    >
+                      +{concepts.length - 5} more concepts
+                    </button>
+                  )}
                 </div>
               </div>
 
-              {/* Concept list */}
-              <div className="flex-1 space-y-0.5">
-                {concepts.map(c => (
-                  <ConceptRow
-                    key={c.id}
-                    concept={c}
-                    isComplete={isComplete(c.id)}
-                    onClick={() => navigate(`/concept/${c.id}`)}
-                  />
-                ))}
-              </div>
-
-              {/* Start CTA */}
+              {/* Start / Continue button */}
               <button
-                onClick={() => navigate(`/concept/${concepts[0].id}`)}
-                className="w-full py-2 rounded-lg text-sm font-medium border border-slate-700 text-slate-400 hover:text-slate-200 hover:border-slate-600 hover:bg-slate-800 transition-all cursor-pointer"
+                onClick={() => {
+                  const nextConcept = concepts.find(c => !isComplete(c.id)) ?? concepts[0]
+                  navigate(`/concept/${nextConcept.id}`)
+                }}
+                className="w-full py-2.5 rounded-xl text-sm font-mono font-medium border border-slate-700 hover:border-slate-500 text-slate-200 hover:text-white bg-slate-900/60 hover:bg-slate-800/80 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 {done > 0 ? 'Continue →' : 'Start Level →'}
               </button>
@@ -179,33 +193,94 @@ export function Home() {
         })}
       </div>
 
-      {/* Practice & Quiz Entry Cards */}
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Interview Practice Card */}
+      {/* Practice & Revision Cards */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Flashcards Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="rounded-2xl border border-emerald-400/20 hover:border-emerald-400/40 bg-gradient-to-br from-emerald-400/5 to-transparent p-6 flex flex-col justify-between space-y-4 group transition-all"
+        >
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold">
+                🗂️ {dueCount} cards due today
+              </span>
+            </div>
+            <h3 className="text-lg font-bold text-slate-100 font-mono">
+              Flashcards
+            </h3>
+            <p className="text-xs text-slate-400 leading-relaxed font-sans">
+              SM-2 spaced repetition engine covering terms, pitfalls, and interview answers scheduled before memory fades.
+            </p>
+          </div>
+
+          <button
+            onClick={() => navigate('/flashcards')}
+            className="w-full py-2.5 rounded-xl text-xs font-mono font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <span>Review Cards</span>
+            <span>→</span>
+          </button>
+        </motion.div>
+
+        {/* Terminology Graph Card */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
+          className="rounded-2xl border border-sky-400/20 hover:border-sky-400/40 bg-gradient-to-br from-sky-400/5 to-transparent p-6 flex flex-col justify-between space-y-4 group transition-all"
+        >
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="px-2 py-0.5 rounded bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-mono font-semibold">
+                🌐 Interactive Map
+              </span>
+              <span className="text-[11px] font-mono text-slate-500">{glossary.length} terms</span>
+            </div>
+            <h3 className="text-lg font-bold text-slate-100 font-mono">
+              Terminology Graph
+            </h3>
+            <p className="text-xs text-slate-400 leading-relaxed font-sans">
+              2D force-directed cluster diagram connecting backend terms by co-occurrence across concepts.
+            </p>
+          </div>
+
+          <button
+            onClick={() => navigate('/graph')}
+            className="w-full py-2.5 rounded-xl text-xs font-mono font-semibold bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <span>Explore Graph</span>
+            <span>→</span>
+          </button>
+        </motion.div>
+
+        {/* Interview Practice Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
           className="rounded-2xl border border-amber-400/20 hover:border-amber-400/40 bg-gradient-to-br from-amber-400/5 to-transparent p-6 flex flex-col justify-between space-y-4 group transition-all"
         >
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-semibold">
-                🎯 Flashcard Practice
+                🎯 Flashcard Q&A
               </span>
-              <span className="text-xs font-mono text-slate-500">146 questions</span>
+              <span className="text-[11px] font-mono text-slate-500">146 questions</span>
             </div>
             <h3 className="text-lg font-bold text-slate-100 font-mono">
               Interview Practice
             </h3>
-            <p className="text-sm text-slate-400 leading-relaxed font-sans">
-              Test your knowledge across all 73 backend concepts with 3D flip card flashcards, 3-line model answers, and self-eval tracking.
+            <p className="text-xs text-slate-400 leading-relaxed font-sans">
+              Test your knowledge across all 73 backend concepts with 3-line model answers and self-eval tracking.
             </p>
           </div>
 
           <button
             onClick={() => navigate('/interview')}
-            className="w-full py-2.5 rounded-xl text-sm font-mono font-semibold bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full py-2.5 rounded-xl text-xs font-mono font-semibold bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             <span>Start Practice</span>
             <span>→</span>
@@ -216,27 +291,27 @@ export function Home() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.45 }}
           className="rounded-2xl border border-indigo-400/20 hover:border-indigo-400/40 bg-gradient-to-br from-indigo-400/5 to-transparent p-6 flex flex-col justify-between space-y-4 group transition-all"
         >
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="px-2 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-mono font-semibold">
-                ⚡ Output Prediction
+                ⚡ Code Output
               </span>
-              <span className="text-xs font-mono text-slate-500">20 quizzes</span>
+              <span className="text-[11px] font-mono text-slate-500">20 quizzes</span>
             </div>
             <h3 className="text-lg font-bold text-slate-100 font-mono">
               Quiz Yourself
             </h3>
-            <p className="text-sm text-slate-400 leading-relaxed font-sans">
-              Predict the output of tricky asynchronous code, middleware chaining quirks, and Mongoose indexing behavior.
+            <p className="text-xs text-slate-400 leading-relaxed font-sans">
+              Predict the output of tricky asynchronous code, middleware quirks, and Mongoose indexing behavior.
             </p>
           </div>
 
           <button
             onClick={handleQuizRandom}
-            className="w-full py-2.5 rounded-xl text-sm font-mono font-semibold bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full py-2.5 rounded-xl text-xs font-mono font-semibold bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             <span>Random Quiz</span>
             <span>→</span>
@@ -248,11 +323,14 @@ export function Home() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.45 }}
+        transition={{ delay: 0.5 }}
         className="flex items-center gap-6 pt-4 border-t border-slate-800 flex-wrap"
       >
         <div className="text-xs font-mono text-slate-600">
           <span className="text-slate-400 font-semibold">{allConcepts.length}</span> concepts
+        </div>
+        <div className="text-xs font-mono text-slate-600">
+          <span className="text-slate-400 font-semibold">{glossary.length}</span> terms
         </div>
         <div className="text-xs font-mono text-slate-600">
           <span className="text-slate-400 font-semibold">14</span> viz types

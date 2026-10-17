@@ -178,17 +178,17 @@ export function InterviewPage() {
           {/* 3D Flip Card Container */}
           <div
             onClick={() => setIsFlipped(f => !f)}
-            className="w-full min-h-[340px] [perspective:1200px] cursor-pointer select-none group"
+            className="w-full h-[400px] sm:h-[450px] [perspective:1200px] cursor-pointer select-none group"
             title="Click card to flip"
           >
             <motion.div
               animate={{ rotateY: isFlipped ? 180 : 0 }}
               transition={{ duration: 0.45, ease: 'easeInOut' }}
-              className="w-full min-h-[340px] [transform-style:preserve-3d] relative"
+              className="w-full h-full [transform-style:preserve-3d] relative"
             >
               {/* FRONT: Question */}
               <div
-                className={`absolute inset-0 [backface-visibility:hidden] rounded-2xl bg-slate-900 border p-8 flex flex-col justify-between shadow-2xl transition-colors duration-200 ${
+                className={`absolute inset-0 [backface-visibility:hidden] rounded-2xl bg-slate-900 border p-6 sm:p-8 flex flex-col justify-between shadow-2xl transition-colors duration-200 overflow-hidden ${
                   currentStatus === 'got'
                     ? 'border-emerald-500/40 bg-emerald-950/10'
                     : currentStatus === 'missed'
@@ -196,41 +196,41 @@ export function InterviewPage() {
                     : 'border-slate-800 group-hover:border-slate-700'
                 }`}
               >
-                <div>
-                  <div className="flex items-center justify-between gap-3 flex-wrap mb-4">
-                    <div className="flex items-center gap-2">
-                      <LevelBadge level={currentItem.level} />
-                      <Link
-                        to={`/concept/${currentItem.conceptId}`}
-                        onClick={e => e.stopPropagation()}
-                        className="text-xs font-mono text-slate-400 hover:text-indigo-400 transition-colors underline underline-offset-4"
-                      >
-                        {currentItem.conceptTitle}
-                      </Link>
-                    </div>
-
-                    {currentStatus && (
-                      <span
-                        className={`text-xs font-mono px-2 py-0.5 rounded font-semibold ${
-                          currentStatus === 'got'
-                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                            : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
-                        }`}
-                      >
-                        {currentStatus === 'got' ? '✓ Previously Got' : '✗ Previously Missed'}
-                      </span>
-                    )}
+                <div className="flex-shrink-0 flex items-center justify-between gap-3 flex-wrap mb-2">
+                  <div className="flex items-center gap-2">
+                    <LevelBadge level={currentItem.level} />
+                    <Link
+                      to={`/concept/${currentItem.conceptId}`}
+                      onClick={e => e.stopPropagation()}
+                      className="text-xs font-mono text-slate-400 hover:text-indigo-400 transition-colors underline underline-offset-4"
+                    >
+                      {currentItem.conceptTitle}
+                    </Link>
                   </div>
 
-                  <span className="text-xs font-mono uppercase tracking-wider text-amber-400/80 font-bold">
+                  {currentStatus && (
+                    <span
+                      className={`text-xs font-mono px-2 py-0.5 rounded font-semibold ${
+                        currentStatus === 'got'
+                          ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                          : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                      }`}
+                    >
+                      {currentStatus === 'got' ? '✓ Previously Got' : '✗ Previously Missed'}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex-1 min-h-0 overflow-y-auto my-3 pr-1 flex flex-col justify-center text-center">
+                  <span className="text-xs font-mono uppercase tracking-wider text-amber-400/80 font-bold mb-2 block">
                     Question #{currentItem.questionIndex + 1}
                   </span>
-                  <h2 className="text-xl sm:text-2xl font-semibold text-slate-100 mt-2 leading-relaxed font-sans">
+                  <h2 className="text-lg sm:text-2xl font-semibold text-slate-100 leading-relaxed font-sans break-words max-w-xl mx-auto">
                     {currentItem.question}
                   </h2>
                 </div>
 
-                <div className="pt-6 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-500">
+                <div className="flex-shrink-0 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-500">
                   <span className="flex items-center gap-1 text-indigo-400 group-hover:text-indigo-300 transition-colors">
                     <span>↻ Click card to reveal 3-line answer</span>
                   </span>
@@ -240,7 +240,7 @@ export function InterviewPage() {
 
               {/* BACK: 3-line Answer */}
               <div
-                className={`absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-2xl bg-slate-900 border p-8 flex flex-col justify-between shadow-2xl transition-colors duration-200 ${
+                className={`absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-2xl bg-slate-900 border p-6 sm:p-8 flex flex-col justify-between shadow-2xl transition-colors duration-200 overflow-hidden ${
                   currentStatus === 'got'
                     ? 'border-emerald-500/40 bg-emerald-950/10'
                     : currentStatus === 'missed'
@@ -248,29 +248,27 @@ export function InterviewPage() {
                     : 'border-slate-800 group-hover:border-slate-700'
                 }`}
               >
-                <div>
-                  <div className="flex items-center justify-between gap-3 mb-4">
-                    <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1.5">
-                      <span>💡</span> 3-Line Model Answer
-                    </span>
-                    <span className="text-xs font-mono text-slate-500">
-                      {currentItem.conceptTitle}
-                    </span>
-                  </div>
-
-                  <div className="space-y-3.5 my-3">
-                    {answerLines.map((line, lIdx) => (
-                      <div key={lIdx} className="flex items-start gap-3 text-sm leading-relaxed">
-                        <span className="w-5 h-5 rounded bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 font-mono text-xs flex items-center justify-center flex-shrink-0 mt-0.5 font-bold">
-                          {lIdx + 1}
-                        </span>
-                        <p className="text-slate-200 font-sans">{line}</p>
-                      </div>
-                    ))}
-                  </div>
+                <div className="flex-shrink-0 flex items-center justify-between gap-3 mb-2">
+                  <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1.5">
+                    <span>💡</span> 3-Line Model Answer
+                  </span>
+                  <span className="text-xs font-mono text-slate-500 truncate max-w-[200px]">
+                    {currentItem.conceptTitle}
+                  </span>
                 </div>
 
-                <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-500">
+                <div className="flex-1 min-h-0 overflow-y-auto my-3 pr-1 space-y-3">
+                  {answerLines.map((line, lIdx) => (
+                    <div key={lIdx} className="flex items-start gap-3 text-xs sm:text-sm leading-relaxed p-3 rounded-xl bg-slate-950/50 border border-slate-800/70">
+                      <span className="w-5 h-5 rounded bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 font-mono text-xs flex items-center justify-center flex-shrink-0 mt-0.5 font-bold">
+                        {lIdx + 1}
+                      </span>
+                      <p className="text-slate-200 font-sans break-words">{line}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex-shrink-0 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs font-mono text-slate-500">
                   <span className="text-slate-400 flex items-center gap-1">
                     <span>↻ Click card to flip back</span>
                   </span>

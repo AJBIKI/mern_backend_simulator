@@ -19,6 +19,7 @@
     "postcss": "^8.5.30",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-force-graph-2d": "^1.29.2",
     "react-router-dom": "^6.30.6",
     "shiki": "^4.5.0",
     "tailwindcss": "^4.3.3"
