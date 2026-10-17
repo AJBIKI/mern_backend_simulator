@@ -60,6 +60,7 @@ function ConceptLink({
 }
 
 export function Sidebar({ collapsed, onToggle }: SidebarProps) {
+  const navigate = useNavigate()
   const location = useLocation()
   const { getStatus, levelStats } = useProgress()
   const [filter, setFilter] = useState<ProgressFilter>('all')
@@ -216,6 +217,26 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
               </div>
             ))}
           </nav>
+
+          {/* Bottom Interview Link */}
+          <div className="p-2 border-t border-slate-800 bg-slate-900/90 flex-shrink-0">
+            <button
+              onClick={() => navigate('/interview')}
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-mono transition-all group ${
+                location.pathname === '/interview'
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 font-semibold'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
+              }`}
+            >
+              <div className="flex items-center gap-2 truncate">
+                <span className="text-amber-400 flex-shrink-0">🎯</span>
+                <span className="truncate">Interview Practice</span>
+              </div>
+              <span className="text-[10px] text-slate-500 group-hover:text-slate-300 flex-shrink-0">
+                →
+              </span>
+            </button>
+          </div>
         </div>
 
         {/* Collapse toggle button on the edge */}

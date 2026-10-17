@@ -5,10 +5,18 @@ const STORAGE_KEY = 'backend-revision-progress'
 
 export type ConceptStatus = 'not_started' | 'in_progress' | 'done'
 export type ProgressFilter = 'all' | 'not_started' | 'in_progress' | 'done'
+export type InterviewStatus = 'got' | 'missed'
+
+export interface QuizResult {
+  attempts: number
+  correct: boolean
+}
 
 interface ProgressState {
   completed: string[] // concept ids
   inProgress: string[] // concept ids
+  quizResults: Record<string, QuizResult> // quizId -> { attempts, correct }
+  interviewResults: Record<string, InterviewStatus> // `${conceptId}::${questionIndex}` -> 'got' | 'missed'
 }
 
 function load(): ProgressState {
@@ -19,12 +27,14 @@ function load(): ProgressState {
       return {
         completed: Array.isArray(parsed.completed) ? parsed.completed : [],
         inProgress: Array.isArray(parsed.inProgress) ? parsed.inProgress : [],
+        quizResults: (parsed.quizResults && typeof parsed.quizResults === 'object') ? parsed.quizResults : {},
+        interviewResults: (parsed.interviewResults && typeof parsed.interviewResults === 'object') ? parsed.interviewResults : {},
       }
     }
   } catch {
     // ignore
   }
-  return { completed: [], inProgress: [] }
+  return { completed: [], inProgress: [], quizResults: {}, interviewResults: {} }
 }
 
 function save(state: ProgressState) {
@@ -57,6 +67,7 @@ export function useProgress() {
 
   const markComplete = useCallback((id: string) => {
     setState(prev => ({
+      ...prev,
       completed: prev.completed.includes(id) ? prev.completed : [...prev.completed, id],
       inProgress: prev.inProgress.filter(c => c !== id),
     }))
@@ -64,6 +75,7 @@ export function useProgress() {
 
   const markIncomplete = useCallback((id: string) => {
     setState(prev => ({
+      ...prev,
       completed: prev.completed.filter(c => c !== id),
       inProgress: prev.inProgress.includes(id) ? prev.inProgress : [...prev.inProgress, id],
     }))
@@ -86,6 +98,44 @@ export function useProgress() {
       return 'not_started'
     },
     [state.completed, state.inProgress]
+  )
+
+  // Quiz results
+  const recordQuizResult = useCallback((quizId: string, isCorrect: boolean) => {
+    setState(prev => {
+      const existing = prev.quizResults[quizId] || { attempts: 0, correct: false }
+      return {
+        ...prev,
+        quizResults: {
+          ...prev.quizResults,
+          [quizId]: {
+            attempts: existing.attempts + 1,
+            correct: isCorrect || existing.correct,
+          },
+        },
+      }
+    })
+  }, [])
+
+  const getQuizResult = useCallback(
+    (quizId: string): QuizResult | undefined => state.quizResults[quizId],
+    [state.quizResults]
+  )
+
+  // Interview results
+  const recordInterviewResult = useCallback((key: string, status: InterviewStatus) => {
+    setState(prev => ({
+      ...prev,
+      interviewResults: {
+        ...prev.interviewResults,
+        [key]: status,
+      },
+    }))
+  }, [])
+
+  const getInterviewResult = useCallback(
+    (key: string): InterviewStatus | undefined => state.interviewResults[key],
+    [state.interviewResults]
   )
 
   // Percentage and counts per level
@@ -113,12 +163,18 @@ export function useProgress() {
   return {
     completed: state.completed,
     inProgress: state.inProgress,
+    quizResults: state.quizResults,
+    interviewResults: state.interviewResults,
     markStarted,
     markComplete,
     markIncomplete,
     isComplete,
     isInProgress,
     getStatus,
+    recordQuizResult,
+    getQuizResult,
+    recordInterviewResult,
+    getInterviewResult,
     levelStats,
     levelProgress,
     totalProgress,
